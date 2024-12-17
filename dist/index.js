@@ -31925,6 +31925,7 @@ try {
                 //await exec.exec('gh', ['variable', 'list'], options);
                 //const trimmed = describeOutput.trim();
                 //console.log(`variable set: ${trimmed}`);
+                console.log(`repository variables updated`);
 
               } catch (error) {
                 console.log(error.message);
