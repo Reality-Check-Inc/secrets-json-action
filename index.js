@@ -92,6 +92,10 @@ try {
           console.log(`BuildDate is ${buildDate}`);
           console.log(`${appsettings} updated`);
 
+          core.setOutput("version", buildVersion);
+          core.setOutput("timestamp", timestamp);
+          core.setOutput("date", buildDate);
+
           // now update the repository variables
           if (ref.indexOf("tags") !== -1)
           {
@@ -113,6 +117,7 @@ try {
                   //  }
                   //};
                   // gh variable set <variable> --body <value>
+                  // uncaughtException TypeError: arg.includes is not a function when setting variables.
                   await exec.exec('gh', ['variable', 'set', giVersion, '--body', buildVersion], options);
                   await exec.exec('gh', ['variable', 'set', giTimeStamp, '--body', timestamp], options);
                   await exec.exec('gh', ['variable', 'set', giDate, '--body', buildDate], options);

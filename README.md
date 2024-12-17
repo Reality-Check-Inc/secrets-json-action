@@ -19,7 +19,18 @@ The build flavor, such as windows, macos, ios. Replaces {BuildFlavor} in appsett
 
 ## Outputs
 
-None
+### `version`
+
+Build version from tag
+
+### `timestamp`
+
+Build unix timestamp
+
+### `date`
+
+Build date string
+
 
 ## Example usage
 

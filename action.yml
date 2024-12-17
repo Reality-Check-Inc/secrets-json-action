@@ -25,6 +25,13 @@ inputs:
     description: 'Build timestamp repository variable name'
     required: false
     default: 'BuildTimeStamp'
+outputs:
+  version: # id of output
+    description: 'Build version from tag'
+  date: # id of output
+    description: 'Build date string'
+  timestamp: # id of output
+    description: 'Build unix timestamp'
 
 runs:
   using: 'node20'

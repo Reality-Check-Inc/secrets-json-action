@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: macos-latest
     timeout-minutes: 15
 
     steps:
@@ -22,7 +22,7 @@ jobs:
       with:
         secrets: ${{ secrets.SECRETS_JSON }}
         appsettings: test_data/appsettings.json
-        flavor: Windows
+        flavor: macOS
       env:
         GH_TOKEN: ${{ secrets.PAT }}
 
@@ -33,12 +33,12 @@ jobs:
     # Use the output from the `info` step
     - name: Set variables
       run: |
-        echo "build_version=${{ steps.info.outputs.version }}" | Out-File -FilePath $env:GITHUB_ENV -Append
-        echo "build_timestamp=${{ steps.info.outputs.timestamp }}" | Out-File -FilePath $env:GITHUB_ENV -Append
-        echo "build_date=${{ steps.info.outputs.date }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+        echo "BUILD_VERSION=$(echo ${{ steps.info.outputs.version }})" >> $GITHUB_ENV
+        echo "BUILD_TIMESTAMP=$(echo ${{ steps.info.outputs.timestamp }})" >> $GITHUB_ENV
+        echo "BUILD_DATE=$(echo ${{ steps.info.outputs.date }})" >> $GITHUB_ENV
 
     - name: Show the variables
       run: |
-        echo "${{ env.build_version }}"
-        echo "${{ env.build_timestamp }}"
-        echo "${{ env.build_date }}"
+        echo $BUILD_VERSION
+        echo $BUILD_TIMESTAMP
+        echo $BUILD_DATE
