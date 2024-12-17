@@ -31859,7 +31859,8 @@ try {
 
   const currentDirectory = __dirname;
   console.log(`current directory is ${currentDirectory}`);
-  const processDirectory = process.cwd();
+  const cwd = process.cwd();
+  const processDirectory = path.dirname(cwd);
   console.log("process directory: ", processDirectory);
 
   const filename = core.getInput('appsettings');
@@ -31870,12 +31871,11 @@ try {
   console.log(`appsettings path is ${appsettings}`);
 
   const fs = __nccwpck_require__(9896);
-  const directoryPath = './';
-  fs.readdir(directoryPath, (err, files) => {
+  fs.readdir(processDirectory, (err, files) => {
     if (err) {
-      console.error('Error reading directory ./:', err);
+      console.error('Error reading directory:', err);
     } else {
-      console.log('Files in directory ./:', files);
+      console.log('Files in directory:', files);
     }
   });
 
