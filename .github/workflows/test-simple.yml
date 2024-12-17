@@ -2,8 +2,7 @@ name: CI
 
 on:
   push:
-    tags:
-      - '*'
+    branches: [ "main" ]
 
   workflow_dispatch:
 
@@ -18,4 +17,4 @@ jobs:
       uses: Reality-Check-Inc/secrets-json-action@v0.6
       with:
         secrets: ${{ secrets.SECRETS_JSON }}
-        appsettings: "test_data/appsettings.json"
+        appsettings: ./package.json
