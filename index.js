@@ -53,6 +53,7 @@ try {
   const filename = core.getInput('appsettings');
   console.log(`appsettings file is ${filename}`);
 
+  const path = require('path');
   var appsettings = path.join(processDirectory, filename);
   console.log(`appsettings path is ${appsettings}`);
 

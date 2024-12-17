@@ -31866,6 +31866,7 @@ try {
   const filename = core.getInput('appsettings');
   console.log(`appsettings file is ${filename}`);
 
+  const path = __nccwpck_require__(6928);
   var appsettings = path.join(processDirectory, filename);
   console.log(`appsettings path is ${appsettings}`);
 
