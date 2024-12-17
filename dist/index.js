@@ -31838,6 +31838,19 @@ try {
   // github ref is:
   // refs/heads/main
   // refs/tags/v0.35
+
+  const giVersion = core.getInput('version');
+  console.log(`giVersion is ${giVersion}`);
+
+  const giDate = core.getInput('date');
+  console.log(`giDate is ${giDate}`);
+
+  const giTimeStamp = core.getInput('timestamp');
+  console.log(`giTimeStamp is ${giTimeStamp}`);
+  
+  const flavor = core.getInput('flavor');
+  console.log(`BuildFlavor is ${flavor}`);
+
   console.log(`github ref is ${github.context.ref}`);
   var buildVersion = "0.0.0"
   const ref = github.context.ref;
@@ -31857,9 +31870,6 @@ try {
   replace(/\..+/, '')     // delete the dot and everything after
   console.log(`Time is ${time}, the unix time stamp is ${timestamp}`);
   console.log(`BuildDate is ${buildDate}`);
-
-  const flavor = core.getInput('flavor');
-  console.log(`BuildFlavor is ${flavor}`);
 
   const secrets = core.getInput('secrets');
   const secret = JSON.parse(secrets);
