@@ -18,7 +18,7 @@ jobs:
     - name: "Update Secrets in AppSettings.json"
       uses: Reality-Check-Inc/secrets-json-action@v0.1
       with:
-        secrets: "{}"
-        appsettings: "package.json"
+        secrets: {}
+        appsettings: test_data/appsettings.json
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
