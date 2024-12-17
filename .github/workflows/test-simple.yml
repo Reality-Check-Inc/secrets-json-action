@@ -15,8 +15,8 @@ jobs:
 
     steps:
       uses: Reality-Check-Inc/secrets-json-action@v0.1
+      with:
         secrets: "{}"
         appsettings: "package.json"
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
