@@ -17,4 +17,4 @@ jobs:
       uses: Reality-Check-Inc/secrets-json-action@v0.6
       with:
         secrets: ${{ secrets.SECRETS_JSON }}
-        appsettings: ./package.json
+        appsettings: ./test_data/appsettings.json
