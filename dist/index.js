@@ -31918,13 +31918,13 @@ try {
                   console.log(`uncaughtException ${err} when setting variables.`);
                 });
                 try {
-                  let describeOutput = '';
+                  //let describeOutput = '';
                   const options = {};
-                  options.listeners = {
-                    stdout: (data) => {
-                      describeOutput += data.toString();
-                    }
-                  };
+                  //options.listeners = {
+                  //  stdout: (data) => {
+                  //    describeOutput += data.toString();
+                  //  }
+                  //};
                   await exec.exec('gh', ['variable', 'set', giVersion, '--body', buildVersion], options);
                   await exec.exec('gh', ['variable', 'set', giTimeStamp, '--body', timestamp], options);
                   await exec.exec('gh', ['variable', 'set', giDate, '--body', buildDate], options);
