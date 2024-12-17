@@ -31830,11 +31830,11 @@ const exec = __nccwpck_require__(4238);
 try {
   const timestamp = Math.floor(Date.now() / 1000);
   const time = (new Date()).toTimeString();
-  const date = new Date().toISOString().
+  const buildDate = new Date().toISOString().
   replace(/T/, ' ').      // replace T with a space
   replace(/\..+/, '')     // delete the dot and everything after
   console.log(`Time is ${time}, the unix time stamp is ${timestamp}`);
-  console.log(`BuildDate is ${date}`);
+  console.log(`BuildDate is ${buildDate}`);
 
   //const payload = JSON.stringify(github.context.payload, undefined, 2)
   //console.log(`The event payload: ${payload}`);
@@ -31843,16 +31843,16 @@ try {
   //console.log(`github event is ${github.context.eventName}`);
   //"ref": "refs/tags/v1.12",
   console.log(`github ref is ${github.context.ref}`);
+  var buildVersion = "0.0.0"
   const str = github.context.ref;
-  var lastPart = "0.0.0"
   if (str.indexOf("tags") !== -1)
   {
     const parts = str.split("/");
-    lastPart = parts.pop();
-    if (lastPart.startsWith("v"))
-      lastPart = lastPart.substring(1);
+    buildVersion = parts.pop();
+    if (buildVersion.startsWith("v"))
+      buildVersion = buildVersion.substring(1);
   }
-  console.log(`version is ${lastPart}`);
+  console.log(`version is ${buildVersion}`);
 
   const secrets = core.getInput('secrets');
   console.log(`secrets json is ${secrets}`);
@@ -31865,9 +31865,18 @@ try {
     if (err) {
       console.log(`${appsettings} file access ${err}`);
     } else {
-      console.log('File exists');
-      const src = fs.readFileSync(`${appsettings}`).toString();
-      console.log(`${appsettings} file contains ${src}`);
+      console.log(`${appsettings} exists`);
+      
+      async function run() {
+        try {
+          const data = await fs.readFile(appsettings, 'utf8');
+          console.log(data);
+        } catch (err) {
+          console.error(err);
+        }
+      }
+      run();
+
     }
   });
 
