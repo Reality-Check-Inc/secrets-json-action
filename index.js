@@ -42,6 +42,9 @@ try {
   console.log(`Time is ${time}, the unix time stamp is ${timestamp}`);
   console.log(`BuildDate is ${buildDate}`);
 
+  const flavor = core.getInput('flavor');
+  console.log(`BuildFlavor is ${flavor}`);
+
   const secrets = core.getInput('secrets');
   const secret = JSON.parse(secrets);
 
@@ -72,6 +75,7 @@ try {
       var contents = fileContents
       .replace("{BuildVersion}", buildVersion)
       .replace("{BuildTimeStamp}", timestamp)
+      .replace("{BuildFlavor}", flavor)
       .replace("{BuildDate}", buildDate);
       for (const key in secret)
         contents = contents.replace(key, secret[key]);

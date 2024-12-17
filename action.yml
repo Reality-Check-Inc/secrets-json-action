@@ -9,6 +9,10 @@ inputs:
     description: 'Path to appsettings.json'
     required: true
     default: 'appsettings.json'
+  flavor:  # id of input
+    description: 'Build flavor, such as windows,ios,macos'
+    required: false
+    default: 'windows'
 runs:
   using: 'node20'
   main: 'dist/index.js'
