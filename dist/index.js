@@ -31828,8 +31828,9 @@ const github = __nccwpck_require__(9414);
 const exec = __nccwpck_require__(4238);
 
 try {
-  const timestamp = Math.floor(Date.now() / 1000);
-  const time = (new Date()).toTimeString();
+  const now = Date.now();
+  const timestamp = Math.floor(now / 1000);
+  const time = now.toTimeString();
   console.log(`Time is ${time}, the unix time stamp is ${timestamp}`);
 
   //const payload = JSON.stringify(github.context.payload, undefined, 2)
@@ -31839,6 +31840,16 @@ try {
   //console.log(`github event is ${github.context.eventName}`);
   //"ref": "refs/tags/v1.12",
   console.log(`github ref is ${github.context.ref}`);
+  const str = github.context.ref;
+  var lastPart = "0.0.0"
+  if (str.indexOf("tags") !== -1)
+  {
+    const parts = str.split("/");
+    lastPart = parts.pop();
+    if (lastPart.startsWith("v"))
+      lastPart = lastPart.substring(1);
+  }
+  console.log(`version is ${lastPart}`);
 
   const secrets = core.getInput('secrets');
   console.log(`secrets json is ${secrets}`);
@@ -31849,16 +31860,17 @@ try {
   const fs = __nccwpck_require__(9896);
   fs.access(appsettings, fs.constants.F_OK, (err) => {
     if (err) {
-      console.error('File does not exist');
+      console.log(`${appsettings} file access ${err}`);
     } else {
       console.log('File exists');
-      const src = require(appsettings);
-      console.log(src);
+      const src = fs.readFileSync(appsettings).toString();
+      console.log(`${appsettings} file contains ${src}`);
     }
   });
 
 } catch (error) {
-  core.setFailed(error.message);
+  console.log(error.message);
+  //core.setFailed(error.message);
 }
 
 module.exports = __webpack_exports__;

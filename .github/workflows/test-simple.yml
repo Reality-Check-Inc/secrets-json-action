@@ -14,7 +14,7 @@ jobs:
     steps:
 
     - name: "Update Secrets in AppSettings.json"
-      uses: Reality-Check-Inc/secrets-json-action@v0.6
+      uses: Reality-Check-Inc/secrets-json-action@v0.7
       with:
         secrets: ${{ secrets.SECRETS_JSON }}
         appsettings: ./test_data/appsettings.json
