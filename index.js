@@ -111,9 +111,9 @@ try {
         await exec.exec('gh', ['variable', 'set', giVersion, '--body', buildVersion], options);
         await exec.exec('gh', ['variable', 'set', giDate, '--body', buildDate], options);
         await exec.exec('gh', ['variable', 'set', giTimeStamp, '--body', timestamp], options);
-        await exec.exec('gh', ['variable', 'list'], options);
+        //await exec.exec('gh', ['variable', 'list'], options);
         const trimmed = describeOutput.trim();
-        console.log(`The variable list is: ${trimmed}`);
+        console.log(`variable set: ${trimmed}`);
 
       } catch (error) {
         console.log(error.message);
