@@ -31842,15 +31842,17 @@ try {
 
   const appsettings = core.getInput('appsettings');
   console.log(`appsettings file is ${appsettings}`);
-  var asf = new File(appsettings);
-  if(asf.exists()){
-    console.log(`The file exists`);
-  } else {
-    console.log(`The file does not exist`);
-  }
 
-  const src = require(appsettings);
-  console.log(src);
+  const fs = __nccwpck_require__(9896);
+  fs.access(appsettings, fs.constants.F_OK, (err) => {
+    if (err) {
+      console.error('File does not exist');
+    } else {
+      console.log('File exists');
+      const src = require(appsettings);
+      console.log(src);
+    }
+  });
 
 } catch (error) {
   core.setFailed(error.message);
