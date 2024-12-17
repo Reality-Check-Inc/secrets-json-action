@@ -87,8 +87,8 @@ try {
         if (err) {
           core.setFailed(`${appsettings} update error ${err}`);
         } else {
-          console.log(`${appsettings} updated to ${contents}`);
-          //console.log(`${appsettings} updated`);
+          //console.log(`${appsettings} updated to ${contents}`);
+          console.log(`${appsettings} updated`);
         }
       });
     }

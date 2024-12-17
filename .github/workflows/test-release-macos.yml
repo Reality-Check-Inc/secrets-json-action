@@ -19,7 +19,7 @@ jobs:
         fetch-depth: 0
 
     - name: Update Secrets in AppSettings.json
-      uses: Reality-Check-Inc/secrets-json-action@v0.41
+      uses: Reality-Check-Inc/secrets-json-action@v0.42
       with:
         secrets: ${{ secrets.SECRETS_JSON }}
         appsettings: test_data/appsettings.json
