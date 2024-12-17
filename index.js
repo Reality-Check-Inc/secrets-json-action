@@ -74,11 +74,17 @@ try {
       var contents = fileContents
         .replace("{BuildVersion}", buildVersion)
         .replace("{BuildDate}", buildDate);
-      for (const key in secret) {
+      for (const key in secret)
         contents = contents.replace(key, secret[key]);
-        //console.log(key + ": " + secret[key]);
-      }
-      console.log(`updated to ${contents}`);
+      //console.log(`updated to ${contents}`);
+
+      fs.writeFile(appsettings, contents, err => {
+        if (err) {
+          console.log(`${appsettings} update error ${err}`);
+        } else {
+          console.log(`${appsettings} updated to ${contents}`);
+        }
+      });
     }
   });
 
