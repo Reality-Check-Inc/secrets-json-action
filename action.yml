@@ -9,19 +9,23 @@ inputs:
     description: 'Path to appsettings.json'
     required: true
     default: 'appsettings.json'
-  version:  # id of input
-    description: 'Build version'
-    required: false
-  date:  # id of input
-    description: 'Build date'
-    required: false
-  timestamp:  # id of input
-    description: 'Build timestamp'
-    required: false
   flavor:  # id of input
     description: 'Build flavor, such as windows,ios,macos'
     required: false
     default: 'windows'
+  version:  # id of input
+    description: 'Build version repository variable name'
+    required: false
+    default: 'BuildVersion'
+  date:  # id of input
+    description: 'Build date repository variable name'
+    required: false
+    default: 'BuildDate'
+  timestamp:  # id of input
+    description: 'Build timestamp repository variable name'
+    required: false
+    default: 'BuildTimeStamp'
+
 runs:
   using: 'node20'
   main: 'dist/index.js'
