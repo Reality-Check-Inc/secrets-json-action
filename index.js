@@ -27,7 +27,6 @@ try {
   // refs/tags/v0.35
 
   const flavor = core.getInput('flavor');
-  console.log(`BuildFlavor is ${flavor}`);
 
   console.log(`github ref is ${github.context.ref}`);
   var buildVersion = "0.0.0"
@@ -39,7 +38,6 @@ try {
     if (buildVersion.startsWith("v"))
       buildVersion = buildVersion.substring(1);
   }
-  console.log(`BuildVersion is ${buildVersion}`);
 
   const timestamp = Math.floor(Date.now() / 1000);
   const time = (new Date()).toTimeString();
@@ -47,7 +45,6 @@ try {
   replace(/T/, ' ').      // replace T with a space
   replace(/\..+/, '')     // delete the dot and everything after
   console.log(`Time is ${time}, the unix time stamp is ${timestamp}`);
-  console.log(`BuildDate is ${buildDate}`);
 
   const secrets = core.getInput('secrets');
   const secret = JSON.parse(secrets);
@@ -78,8 +75,8 @@ try {
       //console.log(`${appsettings} exists with ${fileContents}`);
       var contents = fileContents
       .replace("{BuildVersion}", buildVersion)
-      .replace("{BuildTimeStamp}", timestamp)
       .replace("{BuildFlavor}", flavor)
+      .replace("{BuildTimeStamp}", timestamp)
       .replace("{BuildDate}", buildDate);
       for (const key in secret)
         contents = contents.replace(key, secret[key]);
@@ -88,6 +85,10 @@ try {
           core.setFailed(`${appsettings} update error ${err}`);
         } else {
           //console.log(`${appsettings} updated to ${contents}`);
+          console.log(`BuildVersion is ${buildVersion}`);
+          console.log(`BuildFlavor is ${flavor}`);
+          console.log(`BuildTimeStamp is ${timestamp}`);
+          console.log(`BuildDate is ${buildDate}`);
           console.log(`${appsettings} updated`);
         }
       });
@@ -109,11 +110,11 @@ try {
           }
         };
         await exec.exec('gh', ['variable', 'set', giVersion, '--body', buildVersion], options);
-        await exec.exec('gh', ['variable', 'set', giDate, '--body', buildDate], options);
         await exec.exec('gh', ['variable', 'set', giTimeStamp, '--body', timestamp], options);
+        await exec.exec('gh', ['variable', 'set', giDate, '--body', buildDate], options);
         //await exec.exec('gh', ['variable', 'list'], options);
-        const trimmed = describeOutput.trim();
-        console.log(`variable set: ${trimmed}`);
+        //const trimmed = describeOutput.trim();
+        //console.log(`variable set: ${trimmed}`);
 
       } catch (error) {
         console.log(error.message);
