@@ -101,6 +101,9 @@ try {
               const giDate = core.getInput('date');
               const giTimeStamp = core.getInput('timestamp');
               async function run() {
+                process.on('uncaughtException', function (err) {
+                  console.log(`uncaughtException ${err} when setting variables.`);
+                });
                 try {
                   let describeOutput = '';
                   const options = {};
