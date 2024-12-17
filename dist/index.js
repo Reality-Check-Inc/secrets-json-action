@@ -31861,8 +31861,16 @@ try {
 
   const currentDirectory = __dirname;
   console.log(`current directory is ${currentDirectory}`);
-  const cwd = process.cwd();
-  const processDirectory = path.dirname(cwd);
+  fs.readdir(currentDirectory, (err, files) => {
+    if (err) {
+      console.error('Error reading directory:', err);
+    } else {
+      console.log('Files in directory:', files);
+    }
+  });
+
+  const processDirectory = process.cwd();
+  //const processDirectory = path.dirname(cwd);
   console.log("process directory: ", processDirectory);
 
   const filename = core.getInput('appsettings');
