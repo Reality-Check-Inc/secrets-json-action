@@ -13,6 +13,8 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const exec = require('@actions/exec');
+const path = require('path');
+const fs = require('fs');
 
 try {
   //const payload = JSON.stringify(github.context.payload, undefined, 2)
@@ -53,11 +55,9 @@ try {
   const filename = core.getInput('appsettings');
   console.log(`appsettings file is ${filename}`);
 
-  const path = require('path');
   var appsettings = path.join(processDirectory, filename);
   console.log(`appsettings path is ${appsettings}`);
 
-  const fs = require('fs');
   fs.readdir(processDirectory, (err, files) => {
     if (err) {
       console.error('Error reading directory:', err);

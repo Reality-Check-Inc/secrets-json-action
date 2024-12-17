@@ -31826,6 +31826,8 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(8190);
 const github = __nccwpck_require__(9414);
 const exec = __nccwpck_require__(4238);
+const path = __nccwpck_require__(6928);
+const fs = __nccwpck_require__(9896);
 
 try {
   //const payload = JSON.stringify(github.context.payload, undefined, 2)
@@ -31866,11 +31868,9 @@ try {
   const filename = core.getInput('appsettings');
   console.log(`appsettings file is ${filename}`);
 
-  const path = __nccwpck_require__(6928);
   var appsettings = path.join(processDirectory, filename);
   console.log(`appsettings path is ${appsettings}`);
 
-  const fs = __nccwpck_require__(9896);
   fs.readdir(processDirectory, (err, files) => {
     if (err) {
       console.error('Error reading directory:', err);
