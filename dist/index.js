@@ -31863,6 +31863,9 @@ try {
   const currentDirectory = __dirname;
   console.log(`current directory is ${currentDirectory}`);
 
+  const currentWork = path.basename(process.cwd());
+  console.log(`current working directory is ${currentWork}`);
+
   const fs = __nccwpck_require__(9896);
   fs.access(appsettings, fs.constants.F_OK, (err) => {
     if (err) {
