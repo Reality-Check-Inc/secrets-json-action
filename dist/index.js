@@ -31860,11 +31860,14 @@ try {
 
   const currentDirectory = __dirname;
   console.log(`current directory is ${currentDirectory}`);
-  console.log("process directory: ", process.cwd());
+  const processDirectory = process.cwd();
+  console.log("process directory: ", processDirectory);
 
-  const appsettings = core.getInput('appsettings');
-  console.log(`appsettings file is ${appsettings}`);
+  const filename = core.getInput('appsettings');
+  console.log(`appsettings file is ${filename}`);
 
+  var appsettings = path.join(processDirectory, filename);
+  console.log(`appsettings path is ${appsettings}`);
 
   const fs = __nccwpck_require__(9896);
   fs.access(appsettings, fs.constants.F_OK, (err) => {
