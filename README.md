@@ -33,6 +33,37 @@ Standard values updated are:
 | {BuildTimeStamp} | Current build unix time stamp  |
 | {BuildDate} | Current build in UTC date string  |
 
+`appsettings.json` is the configuration file for Maui apps.  This is what is used in the test.
+
+```json
+{
+  "AppConfig": {
+    "AppName": "Something",
+    "BuildDate": "{BuildDate}",
+    "BuildTimeStamp": "{BuildTimeStamp}",
+    "Version": "{BuildVersion}",
+    "Flavor": "{BuildFlavor}",
+    "ApplicationInsights": {
+      "ConnectionString": ""
+    },
+    "WeatherApi": {
+      "BaseUrl": "http://api.weatherapi.com",
+      "ApiKey": "{WeatherApi:ApiKey}",
+      "ApiVersion": "v1"
+    },
+    "ArcGIS": {
+      "LicenseKey": "{ArcGIS:LicenseKey}",
+      "ApiKey": "{ArcGIS:ApiKey}"
+    }
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Warning"
+    }
+  }
+}
+```
+
 ### `flavor`
 
 The build flavor, such as windows, macos, ios. Replaces {BuildFlavor} in appsettings.json with this value.
