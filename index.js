@@ -75,7 +75,7 @@ try {
         .replace("{BuildVersion}", buildVersion)
         .replace("{BuildDate}", buildDate);
       for (const key in secret) {
-        contents = contents.replace(key, secrete[key]);
+        contents = contents.replace(key, secret[key]);
         //console.log(key + ": " + secret[key]);
       }
       console.log(`updated to ${contents}`);
