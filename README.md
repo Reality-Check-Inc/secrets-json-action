@@ -25,7 +25,7 @@ None
 
 ```yaml
 - name: Update Secrets in AppSettings.json
-  uses: Reality-Check-Inc/secrets-json-action@v0.40
+  uses: Reality-Check-Inc/secrets-json-action@v1
   with:
     secrets: ${{ secrets.SECRETS_JSON }}
     appsettings: test_data/appsettings.json
