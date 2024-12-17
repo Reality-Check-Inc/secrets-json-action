@@ -112,9 +112,10 @@ try {
                   //    describeOutput += data.toString();
                   //  }
                   //};
-                  await exec.exec('gh', ['variable', 'set', giVersion, '--body', buildVersion], options);
-                  await exec.exec('gh', ['variable', 'set', giTimeStamp, '--body', timestamp], options);
-                  await exec.exec('gh', ['variable', 'set', giDate, '--body', buildDate], options);
+                  // gh variable set <variable> <value> --visibility <visibility>
+                  await exec.exec('gh', ['variable', 'set', giVersion, buildVersion], options);
+                  await exec.exec('gh', ['variable', 'set', giTimeStamp, timestamp], options);
+                  await exec.exec('gh', ['variable', 'set', giDate, buildDate], options);
                   //await exec.exec('gh', ['variable', 'list'], options);
                   //const trimmed = describeOutput.trim();
                   //console.log(`variable set: ${trimmed}`);
