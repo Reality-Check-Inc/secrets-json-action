@@ -28,6 +28,14 @@ try {
   console.log(`github ref is ${github.context.ref}`);
 
   const appsettings = core.getInput('appsettings');
+  console.log(`appsettings file is ${appsettings}`);
+  var asf = new File(appsettings);
+  if(asf.exists()){
+    console.log(`The file exists`);
+  } else {
+    console.log(`The file does not exist`);
+  }
+
   const src = require(appsettings);
   console.log(src);
 
