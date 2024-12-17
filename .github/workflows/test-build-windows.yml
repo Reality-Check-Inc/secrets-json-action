@@ -19,6 +19,12 @@ jobs:
       with:
         fetch-depth: 0
 
+    - name: repository variable list
+      run: |
+          gh variable list
+      env:
+        GH_TOKEN: ${{ secrets.PAT }}
+
     - name: Update Secrets in AppSettings.json
       uses: Reality-Check-Inc/secrets-json-action@v0.30
       with:
