@@ -47,13 +47,19 @@ try {
   const appsettings = core.getInput('appsettings');
   console.log(`appsettings file is ${appsettings}`);
 
+  const currentDirectory = __dirname;
+  console.log(`current directory is ${currentDirectory}`);
+
   const fs = require('fs');
   fs.access(appsettings, fs.constants.F_OK, (err) => {
     if (err) {
+      // ./test_data/appsettings.json file access
+      // Error: ENOENT: no such file or directory,
+      // access 'D:\a\secrets-json-action\secrets-json-action\test_data\appsettings.json'
       console.log(`${appsettings} file access ${err}`);
     } else {
       console.log(`${appsettings} exists`);
-      
+
       async function run() {
         try {
           const data = await fs.readFile(appsettings, 'utf8');

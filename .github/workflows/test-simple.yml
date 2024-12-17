@@ -9,13 +9,13 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 15
 
     steps:
 
     - name: "Update Secrets in AppSettings.json"
-      uses: Reality-Check-Inc/secrets-json-action@v0.11
+      uses: Reality-Check-Inc/secrets-json-action@v0.12
       with:
         secrets: ${{ secrets.SECRETS_JSON }}
         appsettings: ./test_data/appsettings.json
