@@ -31865,7 +31865,7 @@ try {
     if (err) {
       console.error('Error reading directory:', err);
     } else {
-      console.log('Files in directory:', files);
+      console.log('Files in script:', files);
     }
   });
 
@@ -31883,7 +31883,7 @@ try {
     if (err) {
       console.error('Error reading directory:', err);
     } else {
-      console.log('Files in directory:', files);
+      console.log('Files in cwd:', files);
     }
   });
 
