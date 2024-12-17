@@ -15,10 +15,13 @@ const github = require('@actions/github');
 const exec = require('@actions/exec');
 
 try {
-  const now = Date.now();
-  const timestamp = Math.floor(now / 1000);
-  const time = now.toTimeString();
+  const timestamp = Math.floor(Date.now() / 1000);
+  const time = (new Date()).toTimeString();
+  const date = new Date().toISOString().
+  replace(/T/, ' ').      // replace T with a space
+  replace(/\..+/, '')     // delete the dot and everything after
   console.log(`Time is ${time}, the unix time stamp is ${timestamp}`);
+  console.log(`BuildDate is ${date}`);
 
   //const payload = JSON.stringify(github.context.payload, undefined, 2)
   //console.log(`The event payload: ${payload}`);
