@@ -26,7 +26,7 @@ try {
   // refs/heads/main
   // refs/tags/v0.35
   //const token = process.env['GH_TOKEN'];
-  console.log(process.env);
+  //console.log(process.env);
 
   console.log(`github ref is ${github.context.ref}`);
   var buildVersion = "0.0.0"
@@ -95,31 +95,36 @@ try {
           // now update the repository variables
           if (ref.indexOf("tags") !== -1)
           {
-            const giVersion = core.getInput('version');
-            const giDate = core.getInput('date');
-            const giTimeStamp = core.getInput('timestamp');
-            async function run() {
-              try {
-                let describeOutput = '';
-                const options = {};
-                options.listeners = {
-                  stdout: (data) => {
-                    describeOutput += data.toString();
-                  }
-                };
-                await exec.exec('gh', ['variable', 'set', giVersion, '--body', buildVersion], options);
-                await exec.exec('gh', ['variable', 'set', giTimeStamp, '--body', timestamp], options);
-                await exec.exec('gh', ['variable', 'set', giDate, '--body', buildDate], options);
-                //await exec.exec('gh', ['variable', 'list'], options);
-                //const trimmed = describeOutput.trim();
-                //console.log(`variable set: ${trimmed}`);
-                console.log(`repository variables updated`);
+            if (process.env.GH_TOKEN)
+            {
+              const giVersion = core.getInput('version');
+              const giDate = core.getInput('date');
+              const giTimeStamp = core.getInput('timestamp');
+              async function run() {
+                try {
+                  let describeOutput = '';
+                  const options = {};
+                  options.listeners = {
+                    stdout: (data) => {
+                      describeOutput += data.toString();
+                    }
+                  };
+                  await exec.exec('gh', ['variable', 'set', giVersion, '--body', buildVersion], options);
+                  await exec.exec('gh', ['variable', 'set', giTimeStamp, '--body', timestamp], options);
+                  await exec.exec('gh', ['variable', 'set', giDate, '--body', buildDate], options);
+                  //await exec.exec('gh', ['variable', 'list'], options);
+                  //const trimmed = describeOutput.trim();
+                  //console.log(`variable set: ${trimmed}`);
+                  console.log(`repository variables updated`);
 
-              } catch (error) {
-                console.log(error.message);
+                } catch (error) {
+                  console.log(error.message);
+                }
               }
+              run();
+            } else {
+              console.log(` *** must set GH_TOKEN to personal access token (classic) to set variables.`);
             }
-            run();
           }
         }
       });
