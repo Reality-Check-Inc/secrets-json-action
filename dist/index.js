@@ -31920,6 +31920,7 @@ try {
               async function run() {
                 process.on('uncaughtException', function (err) {
                   console.log(`uncaughtException ${err} when setting variables.`);
+                  console.log(`repository variables *not* updated`);
                 });
                 try {
                   //let describeOutput = '';
