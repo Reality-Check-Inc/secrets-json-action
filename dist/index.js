@@ -31936,7 +31936,7 @@ try {
               }
               run();
             } else {
-              console.log(` *** must set GH_TOKEN to personal access token (classic) to set variables.`);
+              console.log(` *** must set GH_TOKEN to PAT (personal access token classic) to set repository variables.`);
             }
           }
         }

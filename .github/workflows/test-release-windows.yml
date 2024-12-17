@@ -19,10 +19,10 @@ jobs:
         fetch-depth: 0
 
     - name: Update Secrets in AppSettings.json
-      uses: Reality-Check-Inc/secrets-json-action@v1.2
+      uses: Reality-Check-Inc/secrets-json-action@v1.3
       with:
         secrets: ${{ secrets.SECRETS_JSON }}
         appsettings: test_data/appsettings.json
         flavor: Windows
-      #env:
-      #  GH_TOKEN: ${{ secrets.PAT }}
+      env:
+        GH_TOKEN: ${{ secrets.PAT }}
