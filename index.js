@@ -22,12 +22,15 @@ try {
   //const context = JSON.stringify(github.context, undefined, 2)
   //console.log(`context: ${context}`);
 
+  // github ref is:
+  // refs/heads/main
+  // refs/tags/v0.35
   console.log(`github ref is ${github.context.ref}`);
   var buildVersion = "0.0.0"
-  const str = github.context.ref;
-  if (str.indexOf("tags") !== -1)
+  const ref = github.context.ref;
+  if (ref.indexOf("tags") !== -1)
   {
-    const parts = str.split("/");
+    const parts = ref.split("/");
     buildVersion = parts.pop();
     if (buildVersion.startsWith("v"))
       buildVersion = buildVersion.substring(1);
@@ -104,6 +107,12 @@ try {
         // Set the output variable
       const trimmed = describeOutput.trim();
       console.log(`The variable list is: ${trimmed}`);
+      if (ref.indexOf("tags") !== -1)
+      {
+        // gh variable set LOGMINDS_NUGET_VERSION --body "${{ env.nug_version }}"
+        await exec.exec('gh', ['variable', 'set', 'BUILDVERSION', '--body', buildVersion], options);
+      }
+
     } catch (error) {
       console.log(error.message);
     }
