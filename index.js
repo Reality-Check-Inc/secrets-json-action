@@ -74,6 +74,7 @@ try {
     }
   });
 
+
   fs.access(appsettings, fs.constants.F_OK, (err) => {
     if (err) {
       // ./test_data/appsettings.json file access
@@ -81,11 +82,12 @@ try {
       // access 'D:\a\secrets-json-action\secrets-json-action\test_data\appsettings.json'
       console.log(`${appsettings} file access ${err}`);
     } else {
-      console.log(`${appsettings} exists`);
+      const fileContents = fs.readFileSync(appsettings).toString();
+      console.log(`${appsettings} exists with ${fileContents}`);
 
       async function run() {
         try {
-          const data = await fs.readFile(appsettings, 'utf8');
+          const data = await fs.readFile(appsettings);
           console.log(data);
         } catch (err) {
           console.error(err);
