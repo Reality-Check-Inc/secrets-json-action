@@ -31840,6 +31840,9 @@ try {
   //"ref": "refs/tags/v1.12",
   console.log(`github ref is ${github.context.ref}`);
 
+  const secrets = core.getInput('secrets');
+  console.log(`secrets json is ${secrets}`);
+
   const appsettings = core.getInput('appsettings');
   console.log(`appsettings file is ${appsettings}`);
 
