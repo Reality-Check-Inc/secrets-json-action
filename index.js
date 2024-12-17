@@ -109,8 +109,9 @@ try {
       console.log(`The variable list is: ${trimmed}`);
       if (ref.indexOf("tags") !== -1)
       {
-        // gh variable set LOGMINDS_NUGET_VERSION --body "${{ env.nug_version }}"
         await exec.exec('gh', ['variable', 'set', 'BUILDVERSION', '--body', buildVersion], options);
+        await exec.exec('gh', ['variable', 'set', 'BuildTimeStamp', '--body', timestamp], options);
+        await exec.exec('gh', ['variable', 'set', 'BuildDate', '--body', buildDate], options);
       }
 
     } catch (error) {
