@@ -91,24 +91,24 @@ try {
   });
 
   async function run() {
-  try {
-    let describeOutput = '';
-    const options = {};
-    options.listeners = {
-      stdout: (data) => {
-        describeOutput += data.toString();
-      }
-    };
-    // Execute 'git describe'
-    await exec.exec('gh', ['variable', 'list'], options);
-      // Set the output variable
-    const trimmed = describeOutput.trim();
-    console.log(`The output is: ${trimmed}`);
-  } catch (error) {
-    console.log(error.message);
+    try {
+      let describeOutput = '';
+      const options = {};
+      options.listeners = {
+        stdout: (data) => {
+          describeOutput += data.toString();
+        }
+      };
+      // Execute 'git variable list'
+      await exec.exec('gh', ['variable', 'list'], options);
+        // Set the output variable
+      const trimmed = describeOutput.trim();
+      console.log(`The variable list is: ${trimmed}`);
+    } catch (error) {
+      console.log(error.message);
+    }
   }
-}
-run();
+  run();
 
 } catch (error) {
   console.log(error.message);
