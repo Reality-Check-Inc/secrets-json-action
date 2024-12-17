@@ -26,7 +26,7 @@ jobs:
         GH_TOKEN: ${{ secrets.PAT }}
 
     - name: Update Secrets in AppSettings.json
-      uses: Reality-Check-Inc/secrets-json-action@v0.30
+      uses: Reality-Check-Inc/secrets-json-action@v0.31
       with:
         secrets: ${{ secrets.SECRETS_JSON }}
         appsettings: test_data/appsettings.json

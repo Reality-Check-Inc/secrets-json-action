@@ -84,10 +84,31 @@ try {
           core.setFailed(`${appsettings} update error ${err}`);
         } else {
           console.log(`${appsettings} updated to ${contents}`);
+          //console.log(`${appsettings} updated`);
         }
       });
     }
   });
+
+  async function run() {
+  try {
+    let describeOutput = '';
+    const options = {};
+    options.listeners = {
+      stdout: (data) => {
+        describeOutput += data.toString();
+      }
+    };
+    // Execute 'git describe'
+    await exec.exec('gh', ['variable', 'list'], options);
+      // Set the output variable
+    const trimmed = describeOutput.trim();
+    console.log(`The output is: ${trimmed}`);
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+run();
 
 } catch (error) {
   console.log(error.message);
