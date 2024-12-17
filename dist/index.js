@@ -31838,8 +31838,8 @@ try {
   // github ref is:
   // refs/heads/main
   // refs/tags/v0.35
-
-  const flavor = core.getInput('flavor');
+  //const token = process.env['GH_TOKEN'];
+  console.log(process.env);
 
   console.log(`github ref is ${github.context.ref}`);
   var buildVersion = "0.0.0"
@@ -31884,6 +31884,7 @@ try {
     if (err) {
       core.setFailed(`${appsettings} file access ${err}`);
     } else {
+      const flavor = core.getInput('flavor');
       const fileContents = fs.readFileSync(appsettings).toString();
       //console.log(`${appsettings} exists with ${fileContents}`);
       var contents = fileContents
