@@ -14,6 +14,8 @@ jobs:
     timeout-minutes: 15
 
     steps:
+
+    - name: "Secrets to AppSettings.json"
       uses: Reality-Check-Inc/secrets-json-action@v0.1
       with:
         secrets: "{}"
