@@ -47,15 +47,11 @@ try {
 
   const currentDirectory = __dirname;
   console.log(`current directory is ${currentDirectory}`);
-
-  const currentCD = path.basename(currentDirectory);
-  console.log(`current basename CD is ${currentCD}`);
+  console.log("process directory: ", process.cwd());
 
   const appsettings = core.getInput('appsettings');
   console.log(`appsettings file is ${appsettings}`);
 
-  const currentAS = path.basename(appsettings);
-  console.log(`current basename AS is ${currentAS}`);
 
   const fs = require('fs');
   fs.access(appsettings, fs.constants.F_OK, (err) => {
