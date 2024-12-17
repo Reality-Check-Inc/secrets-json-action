@@ -45,19 +45,9 @@ try {
 
   const secrets = core.getInput('secrets');
   console.log(`secrets json is ${secrets}`);
-
-  const currentDirectory = __dirname;
-  console.log(`current directory is ${currentDirectory}`);
-  fs.readdir(currentDirectory, (err, files) => {
-    if (err) {
-      console.error('Error reading directory:', err);
-    } else {
-      console.log('Files in script:', files);
-    }
-  });
+  const secret = JSON.parse(secrets);
 
   const processDirectory = process.cwd();
-  //const processDirectory = path.dirname(cwd);
   console.log("process directory: ", processDirectory);
 
   const filename = core.getInput('appsettings');
@@ -74,27 +64,21 @@ try {
     }
   });
 
-
   fs.access(appsettings, fs.constants.F_OK, (err) => {
     if (err) {
-      // ./test_data/appsettings.json file access
-      // Error: ENOENT: no such file or directory,
-      // access 'D:\a\secrets-json-action\secrets-json-action\test_data\appsettings.json'
       console.log(`${appsettings} file access ${err}`);
     } else {
       const fileContents = fs.readFileSync(appsettings).toString();
       console.log(`${appsettings} exists with ${fileContents}`);
 
-      async function run() {
-        try {
-          const data = await fs.readFile(appsettings);
-          console.log(data);
-        } catch (err) {
-          console.error(err);
-        }
+      var contents = fileContents
+        .replace("{BuildVersion}", buildVersion)
+        .replace("{BuildDate}", buildDate);
+      for (const key in secret) {
+        contents = contents.replace(key, secrete[key]);
+        //console.log(key + ": " + secret[key]);
       }
-      run();
-
+      console.log(`updated to ${contents}`);
     }
   });
 
