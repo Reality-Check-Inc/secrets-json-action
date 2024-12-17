@@ -31832,8 +31832,8 @@ const fs = __nccwpck_require__(9896);
 try {
   //const payload = JSON.stringify(github.context.payload, undefined, 2)
   //console.log(`payload: ${payload}`);
-  const context = JSON.stringify(github.context, undefined, 2)
-  console.log(`context: ${context}`);
+  //const context = JSON.stringify(github.context, undefined, 2)
+  //console.log(`context: ${context}`);
 
   console.log(`github ref is ${github.context.ref}`);
   var buildVersion = "0.0.0"
