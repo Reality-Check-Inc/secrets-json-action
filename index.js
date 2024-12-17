@@ -26,15 +26,6 @@ try {
   // refs/heads/main
   // refs/tags/v0.35
 
-  const giVersion = core.getInput('version');
-  console.log(`giVersion is ${giVersion}`);
-
-  const giDate = core.getInput('date');
-  console.log(`giDate is ${giDate}`);
-
-  const giTimeStamp = core.getInput('timestamp');
-  console.log(`giTimeStamp is ${giTimeStamp}`);
-
   const flavor = core.getInput('flavor');
   console.log(`BuildFlavor is ${flavor}`);
 
@@ -105,6 +96,9 @@ try {
 
   if (ref.indexOf("tags") !== -1)
   {
+    const giVersion = core.getInput('version');
+    const giDate = core.getInput('date');
+    const giTimeStamp = core.getInput('timestamp');
     async function run() {
       try {
         let describeOutput = '';
@@ -114,9 +108,9 @@ try {
             describeOutput += data.toString();
           }
         };
-        await exec.exec('gh', ['variable', 'set', 'BuildVersion', '--body', buildVersion], options);
-        await exec.exec('gh', ['variable', 'set', 'BuildDate', '--body', buildDate], options);
-        await exec.exec('gh', ['variable', 'set', 'BuildTimeStamp', '--body', timestamp], options);
+        await exec.exec('gh', ['variable', 'set', giVersion, '--body', buildVersion], options);
+        await exec.exec('gh', ['variable', 'set', giDate, '--body', buildDate], options);
+        await exec.exec('gh', ['variable', 'set', giTimeStamp, '--body', timestamp], options);
         await exec.exec('gh', ['variable', 'list'], options);
         const trimmed = describeOutput.trim();
         console.log(`The variable list is: ${trimmed}`);
