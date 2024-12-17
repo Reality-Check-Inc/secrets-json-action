@@ -17,6 +17,11 @@ const path = require('path');
 const fs = require('fs');
 
 try {
+  //const payload = JSON.stringify(github.context.payload, undefined, 2)
+  //console.log(`payload: ${payload}`);
+  const context = JSON.stringify(github.context, undefined, 2)
+  console.log(`context: ${context}`);
+
   console.log(`github ref is ${github.context.ref}`);
   var buildVersion = "0.0.0"
   const str = github.context.ref;
@@ -65,8 +70,9 @@ try {
       const fileContents = fs.readFileSync(appsettings).toString();
       //console.log(`${appsettings} exists with ${fileContents}`);
       var contents = fileContents
-        .replace("{BuildVersion}", buildVersion)
-        .replace("{BuildDate}", buildDate);
+      .replace("{BuildVersion}", buildVersion)
+      .replace("{BuildTimeStamp}", timestamp)
+      .replace("{BuildDate}", buildDate);
       for (const key in secret)
         contents = contents.replace(key, secret[key]);
       fs.writeFile(appsettings, contents, err => {

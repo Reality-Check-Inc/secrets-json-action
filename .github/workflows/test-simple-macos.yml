@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: macos-latest
     timeout-minutes: 15
 
     steps:
@@ -19,7 +19,7 @@ jobs:
         fetch-depth: 0
 
     - name: Update Secrets in AppSettings.json
-      uses: Reality-Check-Inc/secrets-json-action@v0.27
+      uses: Reality-Check-Inc/secrets-json-action@v0.28
       with:
         secrets: ${{ secrets.SECRETS_JSON }}
-        appsettings: test_data/appsettings.json
+        appsettings: test_data\appsettings.json
