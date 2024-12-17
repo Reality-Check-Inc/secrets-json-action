@@ -31,3 +31,5 @@ jobs:
         secrets: ${{ secrets.SECRETS_JSON }}
         appsettings: test_data/appsettings.json
         flavor: Windows
+      env:
+        GH_TOKEN: ${{ secrets.PAT }}
