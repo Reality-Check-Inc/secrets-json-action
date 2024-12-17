@@ -22,8 +22,8 @@ try {
 
   //const payload = JSON.stringify(github.context.payload, undefined, 2)
   //console.log(`The event payload: ${payload}`);
-  //const context = JSON.stringify(github.context, undefined, 2)
-  //console.log(`The context payload: ${context}`);
+  const context = JSON.stringify(github.context, undefined, 2)
+  console.log(`The context payload: ${context}`);
   //console.log(`github event is ${github.context.eventName}`);
   //"ref": "refs/tags/v1.12",
   console.log(`github ref is ${github.context.ref}`);

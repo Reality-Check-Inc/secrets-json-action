@@ -2,7 +2,8 @@ name: CI
 
 on:
   push:
-    branches: [ "main" ]
+    tags:
+      - '*'
 
   workflow_dispatch:
 
@@ -14,7 +15,7 @@ jobs:
     steps:
 
     - name: "Update Secrets in AppSettings.json"
-      uses: Reality-Check-Inc/secrets-json-action@v0.7
+      uses: Reality-Check-Inc/secrets-json-action@v0.8
       with:
         secrets: ${{ secrets.SECRETS_JSON }}
         appsettings: ./test_data/appsettings.json
