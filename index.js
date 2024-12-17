@@ -15,8 +15,8 @@ const github = require('@actions/github');
 const exec = require('@actions/exec');
 
 try {
-  const payload = JSON.stringify(github.context.payload, undefined, 2)
-  console.log(`The event payload: ${payload}`);
+  //const payload = JSON.stringify(github.context.payload, undefined, 2)
+  //console.log(`The event payload: ${payload}`);
   //const context = JSON.stringify(github.context, undefined, 2)
   //console.log(`The context payload: ${context}`);
   //console.log(`github event is ${github.context.eventName}`);
@@ -41,7 +41,6 @@ try {
   console.log(`Time is ${time}, the unix time stamp is ${timestamp}`);
   console.log(`BuildDate is ${buildDate}`);
 
-
   const secrets = core.getInput('secrets');
   console.log(`secrets json is ${secrets}`);
 
@@ -58,6 +57,15 @@ try {
   console.log(`appsettings path is ${appsettings}`);
 
   const fs = require('fs');
+  const directoryPath = './';
+  fs.readdir(directoryPath, (err, files) => {
+    if (err) {
+      console.error('Error reading directory ./:', err);
+    } else {
+      console.log('Files in directory ./:', files);
+    }
+  });
+
   fs.access(appsettings, fs.constants.F_OK, (err) => {
     if (err) {
       // ./test_data/appsettings.json file access
