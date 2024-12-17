@@ -17,12 +17,6 @@ const path = require('path');
 const fs = require('fs');
 
 try {
-  //const payload = JSON.stringify(github.context.payload, undefined, 2)
-  //console.log(`The event payload: ${payload}`);
-  //const context = JSON.stringify(github.context, undefined, 2)
-  //console.log(`The context payload: ${context}`);
-  //console.log(`github event is ${github.context.eventName}`);
-  //"ref": "refs/tags/v1.12",
   console.log(`github ref is ${github.context.ref}`);
   var buildVersion = "0.0.0"
   const str = github.context.ref;
@@ -44,7 +38,6 @@ try {
   console.log(`BuildDate is ${buildDate}`);
 
   const secrets = core.getInput('secrets');
-  console.log(`secrets json is ${secrets}`);
   const secret = JSON.parse(secrets);
 
   const processDirectory = process.cwd();
@@ -55,7 +48,7 @@ try {
 
   var appsettings = path.join(processDirectory, filename);
   console.log(`appsettings path is ${appsettings}`);
-
+/*
   fs.readdir(processDirectory, (err, files) => {
     if (err) {
       console.error('Error reading directory:', err);
@@ -63,24 +56,22 @@ try {
       console.log('Files in cwd:', files);
     }
   });
+  */
 
   fs.access(appsettings, fs.constants.F_OK, (err) => {
     if (err) {
-      console.log(`${appsettings} file access ${err}`);
+      core.setFailed(`${appsettings} file access ${err}`);
     } else {
       const fileContents = fs.readFileSync(appsettings).toString();
-      console.log(`${appsettings} exists with ${fileContents}`);
-
+      //console.log(`${appsettings} exists with ${fileContents}`);
       var contents = fileContents
         .replace("{BuildVersion}", buildVersion)
         .replace("{BuildDate}", buildDate);
       for (const key in secret)
         contents = contents.replace(key, secret[key]);
-      //console.log(`updated to ${contents}`);
-
       fs.writeFile(appsettings, contents, err => {
         if (err) {
-          console.log(`${appsettings} update error ${err}`);
+          core.setFailed(`${appsettings} update error ${err}`);
         } else {
           console.log(`${appsettings} updated to ${contents}`);
         }
@@ -90,5 +81,5 @@ try {
 
 } catch (error) {
   console.log(error.message);
-  //core.setFailed(error.message);
+  core.setFailed(error.message);
 }
