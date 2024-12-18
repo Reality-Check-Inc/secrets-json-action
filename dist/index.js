@@ -38648,7 +38648,9 @@ try {
         const builder = new xml2js.Builder();
         parser.parseString(fileContents, (err, result) => {
           if (err) throw err;
-          //console.log(`${manifest} xml ${result}`);
+          console.log(`${manifest} xml ${result}`);
+          console.log(`Identity ${result.Identity}`);
+          console.log(`Identity.Version ${result.Identity.Version}`);
           result.Identity.Version.value = buildVersion;
           const contents = builder.buildObject(result);
           fs.writeFile(manifest, contents, err => {
