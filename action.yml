@@ -9,6 +9,13 @@ inputs:
     description: 'Path to appsettings.json'
     required: true
     default: 'appsettings.json'
+  csproj:
+    description: 'Path to csproj file'
+    required: false
+  printFile:
+    description: 'Print file content after replacement (secrets are hidden)'
+    required: false
+    default: false
   buildversion:  # id of input
     description: 'Build version repository variable value'
     required: false

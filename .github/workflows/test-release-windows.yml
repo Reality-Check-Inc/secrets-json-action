@@ -8,7 +8,12 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    # always remember that windows is powershell
     timeout-minutes: 15
+
+    env:
+      AppSettings_Path: test_data\appsettings.json
+      Project_Path: test_data\maui-app.csproj
 
     steps:
     - name: Check out current repository
@@ -23,11 +28,14 @@ jobs:
 
     - name: Update Secrets in AppSettings.json
       id: info
-      uses: Reality-Check-Inc/secrets-json-action@v1.9.2
+      uses: Reality-Check-Inc/secrets-json-action@v1.9.3
       with:
         secrets: ${{ secrets.SECRETS_JSON }}
-        appsettings: test_data/appsettings.json
+        appsettings: "${{ env.AppSettings_Path }}"
+        csproj: "${{ env.Project_Path }}"
+        buildversion: "${{ vars.BUILDVERSION }}"
         buildflavor: Windows
+        printFile: true
       env:
         GH_TOKEN: ${{ secrets.PAT }}
 
