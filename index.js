@@ -211,13 +211,13 @@ try {
         core.setFailed(`${manifest} file access ${err}`);
       } else {
         const fileContents = fs.readFileSync(manifest).toString();
-        console.log(`${manifest} string ${fileContents}`);
+        //console.log(`${manifest} string ${fileContents}`);
         const parser = new xml2js.Parser();
         const builder = new xml2js.Builder();
         parser.parseString(fileContents, (err, result) => {
           if (err) throw err;
-          console.log(`${manifest} xml ${result}`);
-          console.log(` *** current version = ${result.Package.Identity[0].$.Version}`);
+          //console.log(`${manifest} xml ${result}`);
+          //console.log(` *** current version = ${result.Package.Identity[0].$.Version}`);
           result.Package.Identity[0].$.Version = buildVersion;
           const contents = builder.buildObject(result);
           fs.writeFile(manifest, contents, err => {
@@ -230,23 +230,6 @@ try {
             }
           });
         });
-
-        /*
-        const applicationVersionPattern = /<ApplicationVersion>[^<]*<\/ApplicationVersion>/g;
-        console.log(`${manifest} exists with ${fileContents}`);
-        var contents = fileContents
-        .replace(applicationVersionPattern, `<ApplicationVersion>${timestamp}</ApplicationVersion>`);
-
-        fs.writeFile(manifest, contents, err => {
-          if (err) {
-            core.setFailed(`${manifest} update error ${err}`);
-          } else {
-            if (printFile === true)
-              console.log(`${manifest} updated to ${contents}`);
-            console.log(`${manifest} updated`);
-          }
-        });
-         */
       }
     });
   }
