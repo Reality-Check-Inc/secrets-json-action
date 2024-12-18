@@ -91,12 +91,12 @@ Build date string
 
 ```yaml
 - name: Update Secrets in AppSettings.json
-  id: info
-  uses: Reality-Check-Inc/secrets-json-action@v1.9
+  uses: Reality-Check-Inc/secrets-json-action@v1.9.2
   with:
     secrets: ${{ secrets.SECRETS_JSON }}
     appsettings: test_data/appsettings.json
-    flavor: macOS
+    buildversion: ${{ vars.BUILDVERSION }}
+    buildflavor: Windows
   env:
     GH_TOKEN: ${{ secrets.PAT }}
 ```
