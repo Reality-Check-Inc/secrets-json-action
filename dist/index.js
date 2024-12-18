@@ -38505,7 +38505,7 @@ try {
   const processDirectory = process.cwd();
   console.log("process directory: ", processDirectory);
 
-  if (printDirectory)
+  if (printDirectory === true)
   {
     fs.readdir(processDirectory, (err, files) => {
       if (err) {
@@ -38542,7 +38542,7 @@ try {
           if (err) {
             core.setFailed(`${appsettings} update error ${err}`);
           } else {
-            if (printFile)
+            if (printFile === true)
               console.log(`${appsettings} updated to ${contents}`);
             console.log(`${appsettings} updated`);
             // now update the repository variables
@@ -38620,7 +38620,7 @@ try {
           if (err) {
             core.setFailed(`${csproj} update error ${err}`);
           } else {
-            if (printFile)
+            if (printFile === true)
               console.log(`${csproj} updated to ${contents}`);
             console.log(`${csproj} updated`);
           }
@@ -38651,15 +38651,16 @@ try {
         parser.parseString(fileContents, (err, result) => {
           if (err) throw err;
           console.log(`${manifest} xml ${result}`);
-          console.log(`Identity ${result.identity}`);
-          console.log(`Identity.Version ${result.identity.version}`);
-          result.identity.version.value = buildVersion;
+          console.log(`Identity ${result.Package.Identity}`);
+          console.log(`Identity.Version ${result.Package.Identity.Version}`);
+          console.log(`Identity.Version.value ${result.Package.Identity.Version.value}`);
+          result.Package.Identity.Version.value = buildVersion;
           const contents = builder.buildObject(result);
           fs.writeFile(manifest, contents, err => {
             if (err) {
               core.setFailed(`${manifest} update error ${err}`);
             } else {
-              if (printFile)
+              if (printFile === true)
                 console.log(`${manifest} updated to ${contents}`);
               console.log(`${manifest} updated`);
             }
@@ -38676,7 +38677,7 @@ try {
           if (err) {
             core.setFailed(`${manifest} update error ${err}`);
           } else {
-            if (printFile)
+            if (printFile === true)
               console.log(`${manifest} updated to ${contents}`);
             console.log(`${manifest} updated`);
           }
