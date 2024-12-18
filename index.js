@@ -53,10 +53,6 @@ try {
   const processDirectory = process.cwd();
   console.log("process directory: ", processDirectory);
 
-  var filename = core.getInput('appsettings');
-  console.log(`appsettings file is ${filename}`);
-  var appsettings = path.join(processDirectory, filename);
-  console.log(`appsettings path is ${appsettings}`);
 /*
   fs.readdir(processDirectory, (err, files) => {
     if (err) {
@@ -66,86 +62,95 @@ try {
     }
   });
   */
+  var filename = core.getInput('appsettings');
+  if (filename && filename.trim() == '') {
+    console.log(" *** no appsettings specified, skipping appsettings update");
+  }
+  else
+  {
+    console.log(`appsettings file is ${filename}`);
+    var appsettings = path.join(processDirectory, filename);
+    console.log(`appsettings path is ${appsettings}`);
+    fs.access(appsettings, fs.constants.F_OK, (err) => {
+      if (err) {
+        core.setFailed(`${appsettings} file access ${err}`);
+      } else {
+        const buildFlavor = core.getInput('buildflavor');
+        const fileContents = fs.readFileSync(appsettings).toString();
+        //console.log(`${appsettings} exists with ${fileContents}`);
+        var contents = fileContents
+          .replace("{BuildVersion}", buildVersion)
+          .replace("{BuildFlavor}", buildFlavor)
+          .replace("{BuildTimeStamp}", timestamp)
+          .replace("{BuildDate}", buildDate);
+        for (const key in secret)
+          contents = contents.replace(key, secret[key]);
+        fs.writeFile(appsettings, contents, err => {
+          if (err) {
+            core.setFailed(`${appsettings} update error ${err}`);
+          } else {
+            if (printFile)
+              console.log(`${appsettings} updated to ${contents}`);
 
-  fs.access(appsettings, fs.constants.F_OK, (err) => {
-    if (err) {
-      core.setFailed(`${appsettings} file access ${err}`);
-    } else {
-      const buildFlavor = core.getInput('buildflavor');
-      const fileContents = fs.readFileSync(appsettings).toString();
-      //console.log(`${appsettings} exists with ${fileContents}`);
-      var contents = fileContents
-        .replace("{BuildVersion}", buildVersion)
-        .replace("{BuildFlavor}", buildFlavor)
-        .replace("{BuildTimeStamp}", timestamp)
-        .replace("{BuildDate}", buildDate);
-      for (const key in secret)
-        contents = contents.replace(key, secret[key]);
-      fs.writeFile(appsettings, contents, err => {
-        if (err) {
-          core.setFailed(`${appsettings} update error ${err}`);
-        } else {
-          if (printFile)
-            console.log(`${appsettings} updated to ${contents}`);
+            console.log(`BuildVersion is ${buildVersion}`);
+            console.log(`BuildFlavor is ${buildFlavor}`);
+            console.log(`BuildTimeStamp is ${timestamp}`);
+            console.log(`BuildDate is ${buildDate}`);
+            console.log(`${appsettings} updated`);
 
-          console.log(`BuildVersion is ${buildVersion}`);
-          console.log(`BuildFlavor is ${buildFlavor}`);
-          console.log(`BuildTimeStamp is ${timestamp}`);
-          console.log(`BuildDate is ${buildDate}`);
-          console.log(`${appsettings} updated`);
+            core.setOutput("version", buildVersion);
+            core.setOutput("timestamp", timestamp);
+            core.setOutput("date", buildDate);
 
-          core.setOutput("version", buildVersion);
-          core.setOutput("timestamp", timestamp);
-          core.setOutput("date", buildDate);
-
-          // now update the repository variables
-          if (ref.indexOf("tags") !== -1)
-          {
-            if (process.env.GH_TOKEN)
+            // now update the repository variables
+            if (ref.indexOf("tags") !== -1)
             {
-              const giVersion = core.getInput('version');
-              const giDate = core.getInput('date');
-              const giTimeStamp = core.getInput('timestamp');
-              async function run() {
-                process.on('uncaughtException', function (err) {
-                  console.log(`uncaughtException ${err} when setting variables.`);
-                  console.log(`repository variables *not* updated`);
-                });
-                try {
-                  //let describeOutput = '';
-                  const options = {};
-                  //options.listeners = {
-                  //  stdout: (data) => {
-                  //    describeOutput += data.toString();
-                  //  }
-                  //};
-                  // gh variable set <variable> --body <value>
-                  // uncaughtException TypeError: arg.includes is not a function when setting variables.
-                  await exec.exec('gh', ['variable', 'set', giVersion, '--body', buildVersion], options);
-                  await exec.exec('gh', ['variable', 'set', giTimeStamp, '--body', timestamp], options);
-                  await exec.exec('gh', ['variable', 'set', giDate, '--body', buildDate], options);
-                  //await exec.exec('gh', ['variable', 'list'], options);
-                  //const trimmed = describeOutput.trim();
-                  //console.log(`variable set: ${trimmed}`);
-                  console.log(`repository variables updated`);
+              if (process.env.GH_TOKEN)
+              {
+                const giVersion = core.getInput('version');
+                const giDate = core.getInput('date');
+                const giTimeStamp = core.getInput('timestamp');
+                async function run() {
+                  process.on('uncaughtException', function (err) {
+                    console.log(`uncaughtException ${err} when setting variables.`);
+                    console.log(`repository variables *not* updated`);
+                  });
+                  try {
+                    //let describeOutput = '';
+                    const options = {};
+                    //options.listeners = {
+                    //  stdout: (data) => {
+                    //    describeOutput += data.toString();
+                    //  }
+                    //};
+                    // gh variable set <variable> --body <value>
+                    // uncaughtException TypeError: arg.includes is not a function when setting variables.
+                    await exec.exec('gh', ['variable', 'set', giVersion, '--body', buildVersion], options);
+                    await exec.exec('gh', ['variable', 'set', giTimeStamp, '--body', timestamp], options);
+                    await exec.exec('gh', ['variable', 'set', giDate, '--body', buildDate], options);
+                    //await exec.exec('gh', ['variable', 'list'], options);
+                    //const trimmed = describeOutput.trim();
+                    //console.log(`variable set: ${trimmed}`);
+                    console.log(`repository variables updated`);
 
-                } catch (error) {
-                  console.log(error.message);
+                  } catch (error) {
+                    console.log(error.message);
+                  }
                 }
+                run();
+              } else {
+                console.log(` *** must set GH_TOKEN to PAT (personal access token classic) to set repository variables.`);
               }
-              run();
-            } else {
-              console.log(` *** must set GH_TOKEN to PAT (personal access token classic) to set repository variables.`);
             }
           }
-        }
-      });
-    }
-  });
+        });
+      }
+    });
+  }
   // end of update appsetings.json
 
-
-  var filename = core.getInput('csproj');
+  // Update project file with version
+  filename = core.getInput('csproj');
   if (filename && filename.trim() == '') {
     console.log(" *** no csproj specified, skipping csproj update");
   }
@@ -165,8 +170,8 @@ try {
 
         // match <ApplicationVersion> followed by any sequence of characters that are not a '<', followed by </ApplicationVersion>
         var contents = fileContents
-          .replace(applicationDisplayVersionPattern, `<ApplicationDisplayVersion>${timestamp}</ApplicationDisplayVersion>`)
-          .replace(applicationVersionPattern, `<ApplicationVersion>${buildVersion}</ApplicationVersion>`);
+        .replace(applicationDisplayVersionPattern, `<ApplicationDisplayVersion>${buildVersion}</ApplicationDisplayVersion>`)
+        .replace(applicationVersionPattern, `<ApplicationVersion>${timestamp}</ApplicationVersion>`);
 
         fs.writeFile(csproj, contents, err => {
           if (err) {
@@ -179,8 +184,45 @@ try {
         });
       }
     });
-    // end of update csproj
   }
+  // end of update csproj
+
+  // Update Package.appxmanifest file with version
+  filename = core.getInput('manifest');
+  if (filename && filename.trim() == '') {
+    console.log(" *** no manifest specified, skipping manifest update");
+  }
+  else
+  {
+    console.log(`manifest file is ${filename}`);
+    var manifest = path.join(processDirectory, filename);
+    console.log(`manifest path is ${manifest}`);
+    fs.access(manifest, fs.constants.F_OK, (err) => {
+      if (err) {
+        core.setFailed(`${manifest} file access ${err}`);
+      } else {
+        const fileContents = fs.readFileSync(manifest).toString();
+        console.log(`${manifest} is ${fileContents}`);
+        /*
+        const applicationVersionPattern = /<ApplicationVersion>[^<]*<\/ApplicationVersion>/g;
+        console.log(`${manifest} exists with ${fileContents}`);
+        var contents = fileContents
+        .replace(applicationVersionPattern, `<ApplicationVersion>${timestamp}</ApplicationVersion>`);
+
+        fs.writeFile(manifest, contents, err => {
+          if (err) {
+            core.setFailed(`${manifest} update error ${err}`);
+          } else {
+            if (printFile)
+              console.log(`${manifest} updated to ${contents}`);
+            console.log(`${manifest} updated`);
+          }
+        });
+         */
+      }
+    });
+  }
+  // end of update Package.appxmanifest
 
 } catch (error) {
   console.log(error.message);

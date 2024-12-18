@@ -14,6 +14,7 @@ jobs:
     env:
       AppSettings_Path: test_data\appsettings.json
       Project_Path: test_data\maui-app.csproj
+      Manifest_Path: test_data\Package.appxmanifest
 
     steps:
     - name: Check out current repository
@@ -28,11 +29,12 @@ jobs:
 
     - name: Update AppSettings.json and .csproj
       id: info
-      uses: Reality-Check-Inc/secrets-json-action@v1.9.4
+      uses: Reality-Check-Inc/secrets-json-action@v1.9.5
       with:
         secrets: ${{ secrets.SECRETS_JSON }}
         appsettings: "${{ env.AppSettings_Path }}"
         csproj: "${{ env.Project_Path }}"
+        manifest: "${{ env.Manifest_Path }}"
         buildversion: "${{ vars.BUILDVERSION }}"
         buildflavor: Windows
         printFile: true
