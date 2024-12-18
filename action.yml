@@ -8,14 +8,12 @@ inputs:
   appsettings:  # id of input
     description: 'Path to appsettings.json'
     required: false
-    default: 'appsettings.json'
   csproj:
     description: 'Path to csproj file'
     required: false
   manifest:
     description: 'Path to Windows Package.appxmanifest file'
     required: false
-    default: 'Package.appxmanifest'
   printFile:
     description: 'Print file content after replacement (secrets are hidden)'
     required: false
