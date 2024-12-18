@@ -31840,6 +31840,7 @@ try {
   // refs/tags/v0.35
   //const token = process.env['GH_TOKEN'];
   //console.log(process.env);
+  const printFile = core.getInput('printFile');
 
   console.log(`github ref is ${github.context.ref}`);
   var buildVersion = core.getInput('buildversion');
@@ -31865,9 +31866,8 @@ try {
   const processDirectory = process.cwd();
   console.log("process directory: ", processDirectory);
 
-  const filename = core.getInput('appsettings');
+  var filename = core.getInput('appsettings');
   console.log(`appsettings file is ${filename}`);
-
   var appsettings = path.join(processDirectory, filename);
   console.log(`appsettings path is ${appsettings}`);
 /*
@@ -31888,17 +31888,19 @@ try {
       const fileContents = fs.readFileSync(appsettings).toString();
       //console.log(`${appsettings} exists with ${fileContents}`);
       var contents = fileContents
-      .replace("{BuildVersion}", buildVersion)
-      .replace("{BuildFlavor}", buildFlavor)
-      .replace("{BuildTimeStamp}", timestamp)
-      .replace("{BuildDate}", buildDate);
+        .replace("{BuildVersion}", buildVersion)
+        .replace("{BuildFlavor}", buildFlavor)
+        .replace("{BuildTimeStamp}", timestamp)
+        .replace("{BuildDate}", buildDate);
       for (const key in secret)
         contents = contents.replace(key, secret[key]);
       fs.writeFile(appsettings, contents, err => {
         if (err) {
           core.setFailed(`${appsettings} update error ${err}`);
         } else {
-          //console.log(`${appsettings} updated to ${contents}`);
+          if (printFile)
+            console.log(`${appsettings} updated to ${contents}`);
+
           console.log(`BuildVersion is ${buildVersion}`);
           console.log(`BuildFlavor is ${buildFlavor}`);
           console.log(`BuildTimeStamp is ${timestamp}`);
@@ -31953,6 +31955,45 @@ try {
       });
     }
   });
+  // end of update appsetings.json
+
+
+  var filename = core.getInput('csproj');
+  if (filename && filename.trim() == '') {
+    console.log(" *** no csproj specified, skipping csproj update");
+  }
+  else
+  {
+    console.log(`csproj file is ${filename}`);
+    var csproj = path.join(processDirectory, filename);
+    console.log(`csproj path is ${csproj}`);
+    fs.access(csproj, fs.constants.F_OK, (err) => {
+      if (err) {
+        core.setFailed(`${csproj} file access ${err}`);
+      } else {
+        const applicationDisplayVersionPattern = /<ApplicationDisplayVersion>[^<]*<\/ApplicationDisplayVersion>/g;
+        const applicationVersionPattern = /<ApplicationVersion>[^<]*<\/ApplicationVersion>/g;
+        const fileContents = fs.readFileSync(csproj).toString();
+        console.log(`${csproj} exists with ${fileContents}`);
+
+        // match <ApplicationVersion> followed by any sequence of characters that are not a '<', followed by </ApplicationVersion>
+        var contents = fileContents
+          .replace(applicationDisplayVersionPattern, `<ApplicationDisplayVersion>${timestamp}</ApplicationDisplayVersion>`)
+          .replace(applicationVersionPattern, `<ApplicationVersion>${buildVersion}</ApplicationVersion>`);
+
+        fs.writeFile(csproj, contents, err => {
+          if (err) {
+            core.setFailed(`${csproj} update error ${err}`);
+          } else {
+            if (printFile)
+              console.log(`${csproj} updated to ${contents}`);
+            console.log(`${csproj} updated`);
+          }
+        });
+      }
+    });
+    // end of update csproj
+  }
 
 } catch (error) {
   console.log(error.message);

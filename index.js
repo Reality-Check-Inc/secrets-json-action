@@ -53,7 +53,7 @@ try {
   const processDirectory = process.cwd();
   console.log("process directory: ", processDirectory);
 
-  const filename = core.getInput('appsettings');
+  var filename = core.getInput('appsettings');
   console.log(`appsettings file is ${filename}`);
   var appsettings = path.join(processDirectory, filename);
   console.log(`appsettings path is ${appsettings}`);
@@ -75,10 +75,10 @@ try {
       const fileContents = fs.readFileSync(appsettings).toString();
       //console.log(`${appsettings} exists with ${fileContents}`);
       var contents = fileContents
-      .replace("{BuildVersion}", buildVersion)
-      .replace("{BuildFlavor}", buildFlavor)
-      .replace("{BuildTimeStamp}", timestamp)
-      .replace("{BuildDate}", buildDate);
+        .replace("{BuildVersion}", buildVersion)
+        .replace("{BuildFlavor}", buildFlavor)
+        .replace("{BuildTimeStamp}", timestamp)
+        .replace("{BuildDate}", buildDate);
       for (const key in secret)
         contents = contents.replace(key, secret[key]);
       fs.writeFile(appsettings, contents, err => {
@@ -144,12 +144,16 @@ try {
   });
   // end of update appsetings.json
 
-  const csproj = core.getInput('csproj');
-  if (csproj && csproj.trim() == '') {
+
+  var filename = core.getInput('csproj');
+  if (filename && filename.trim() == '') {
     console.log(" *** no csproj specified, skipping csproj update");
   }
   else
   {
+    console.log(`csproj file is ${filename}`);
+    var csproj = path.join(processDirectory, filename);
+    console.log(`csproj path is ${csproj}`);
     fs.access(csproj, fs.constants.F_OK, (err) => {
       if (err) {
         core.setFailed(`${csproj} file access ${err}`);
@@ -157,11 +161,13 @@ try {
         const applicationDisplayVersionPattern = /<ApplicationDisplayVersion>[^<]*<\/ApplicationDisplayVersion>/g;
         const applicationVersionPattern = /<ApplicationVersion>[^<]*<\/ApplicationVersion>/g;
         const fileContents = fs.readFileSync(csproj).toString();
-        //console.log(`${csproj} exists with ${fileContents}`);
+        console.log(`${csproj} exists with ${fileContents}`);
+
         // match <ApplicationVersion> followed by any sequence of characters that are not a '<', followed by </ApplicationVersion>
         var contents = fileContents
-        .replace(applicationDisplayVersionPattern, `<ApplicationDisplayVersion>${timestamp}</ApplicationDisplayVersion>`)
-        .replace(applicationVersionPattern, `<ApplicationVersion>${buildVersion}</ApplicationVersion>`);
+          .replace(applicationDisplayVersionPattern, `<ApplicationDisplayVersion>${timestamp}</ApplicationDisplayVersion>`)
+          .replace(applicationVersionPattern, `<ApplicationVersion>${buildVersion}</ApplicationVersion>`);
+
         fs.writeFile(csproj, contents, err => {
           if (err) {
             core.setFailed(`${csproj} update error ${err}`);
@@ -169,6 +175,7 @@ try {
             if (printFile)
               console.log(`${csproj} updated to ${contents}`);
             console.log(`${csproj} updated`);
+          }
         });
       }
     });

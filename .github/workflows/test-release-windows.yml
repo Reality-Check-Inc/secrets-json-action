@@ -26,9 +26,9 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.PAT }}
 
-    - name: Update Secrets in AppSettings.json
+    - name: Update AppSettings.json and .csproj
       id: info
-      uses: Reality-Check-Inc/secrets-json-action@v1.9.3
+      uses: Reality-Check-Inc/secrets-json-action@v1.9.4
       with:
         secrets: ${{ secrets.SECRETS_JSON }}
         appsettings: "${{ env.AppSettings_Path }}"
