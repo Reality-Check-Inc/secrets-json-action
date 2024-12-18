@@ -38452,6 +38452,10 @@ const path = __nccwpck_require__(6928);
 const fs = __nccwpck_require__(9896);
 const xml2js = __nccwpck_require__(1736);
 
+function isNullOrEmpty(str) {
+  return str === null || str.trim() === '';
+}
+
 try {
   //const payload = JSON.stringify(github.context.payload, undefined, 2)
   //console.log(`payload: ${payload}`);
@@ -38499,7 +38503,7 @@ try {
   });
   */
   var filename = core.getInput('appsettings');
-  if (filename && filename.trim() == '') {
+  if (isNullOrEmpty(filename)) {
     console.log(" *** no appsettings specified, skipping appsettings update");
   }
   else
@@ -38587,7 +38591,7 @@ try {
 
   // Update project file with version
   filename = core.getInput('csproj');
-  if (filename && filename.trim() == '') {
+  if (isNullOrEmpty(filename)) {
     console.log(" *** no csproj specified, skipping csproj update");
   }
   else
@@ -38625,7 +38629,7 @@ try {
 
   // Update Package.appxmanifest file with version
   filename = core.getInput('manifest');
-  if (filename && filename.trim() == '') {
+  if (isNullOrEmpty(filename)) {
     console.log(" *** no manifest specified, skipping manifest update");
   }
   else
