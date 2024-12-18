@@ -16,9 +16,14 @@ jobs:
       with:
         fetch-depth: 0
 
+    - name: repository variable list
+      run: gh variable list
+      env:
+        GH_TOKEN: ${{ secrets.PAT }}
+
     - name: Update Secrets in AppSettings.json
       id: info
-      uses: Reality-Check-Inc/secrets-json-action@v1.9.1
+      uses: Reality-Check-Inc/secrets-json-action@v1.9.2
       with:
         secrets: ${{ secrets.SECRETS_JSON }}
         appsettings: test_data/appsettings.json
@@ -33,12 +38,20 @@ jobs:
     # Use the output from the `info` step
     - name: Set variables
       run: |
+        gh variable set BUILDVERSION --body "${{ steps.info.outputs.version }}"
         echo "build_version=${{ steps.info.outputs.version }}" | Out-File -FilePath $env:GITHUB_ENV -Append
         echo "build_timestamp=${{ steps.info.outputs.timestamp }}" | Out-File -FilePath $env:GITHUB_ENV -Append
         echo "build_date=${{ steps.info.outputs.date }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+      env:
+        GH_TOKEN: ${{ secrets.PAT }}
 
     - name: Show the variables
       run: |
         echo "${{ env.build_version }}"
         echo "${{ env.build_timestamp }}"
         echo "${{ env.build_date }}"
+
+    - name: repository variable list
+      run: gh variable list
+      env:
+        GH_TOKEN: ${{ secrets.PAT }}
