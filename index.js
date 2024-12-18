@@ -108,7 +108,7 @@ try {
           if (err) {
             core.setFailed(`${appsettings} update error ${err}`);
           } else {
-            if (printFile === true)
+            if (printFile)
               console.log(`${appsettings} updated to ${contents}`);
             console.log(`${appsettings} updated`);
             // now update the repository variables
@@ -175,7 +175,7 @@ try {
         const applicationDisplayVersionPattern = /<ApplicationDisplayVersion>[^<]*<\/ApplicationDisplayVersion>/g;
         const applicationVersionPattern = /<ApplicationVersion>[^<]*<\/ApplicationVersion>/g;
         const fileContents = fs.readFileSync(csproj).toString();
-        console.log(`${csproj} exists with ${fileContents}`);
+        //console.log(`${csproj} exists with ${fileContents}`);
 
         // match <ApplicationVersion> followed by any sequence of characters that are not a '<', followed by </ApplicationVersion>
         var contents = fileContents
@@ -186,7 +186,7 @@ try {
           if (err) {
             core.setFailed(`${csproj} update error ${err}`);
           } else {
-            if (printFile === true)
+            if (printFile)
               console.log(`${csproj} updated to ${contents}`);
             console.log(`${csproj} updated`);
           }
