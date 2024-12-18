@@ -38469,6 +38469,7 @@ try {
   //console.log(process.env);
   const printFile = core.getInput('printFile');
   const printDirectory = core.getInput('printDirectory');
+  const buildFlavor = core.getInput('buildflavor');
 
   console.log(`github ref is ${github.context.ref}`);
   var buildVersion = core.getInput('buildversion');
@@ -38526,7 +38527,6 @@ try {
       if (err) {
         core.setFailed(`${appsettings} file access ${err}`);
       } else {
-        const buildFlavor = core.getInput('buildflavor');
         const fileContents = fs.readFileSync(appsettings).toString();
         //console.log(`${appsettings} exists with ${fileContents}`);
         var contents = fileContents
