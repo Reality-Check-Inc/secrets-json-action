@@ -214,16 +214,18 @@ try {
         const builder = new xml2js.Builder();
         parser.parseString(fileContents, (err, result) => {
           if (err) throw err;
-          console.log(`${manifest} xml ${result}`);
-
-          /*
-          result.root.element[0].value = 'new value';
-          const updatedXml = builder.buildObject(result);
-          fs.writeFile(manifest, updatedXml, (err) => {
-            if (err) throw err;
-            console.log('XML file updated successfully!');
+          //console.log(`${manifest} xml ${result}`);
+          result.Identity.Version.value = buildVersion;
+          const contents = builder.buildObject(result);
+          fs.writeFile(manifest, contents, err => {
+            if (err) {
+              core.setFailed(`${manifest} update error ${err}`);
+            } else {
+              if (printFile)
+                console.log(`${manifest} updated to ${contents}`);
+              console.log(`${manifest} updated`);
+            }
           });
-           */
         });
 
         /*
