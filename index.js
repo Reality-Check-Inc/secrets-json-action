@@ -4,6 +4,7 @@
 // npm install @actions/core
 // npm install @actions/github
 // npm install @actions/exec
+// npm install xml2js
 // npm i -g @vercel/ncc
 // ncc build index.js --license licenses.txt
 // git commit -m "action update"
@@ -15,6 +16,7 @@ const github = require('@actions/github');
 const exec = require('@actions/exec');
 const path = require('path');
 const fs = require('fs');
+const xml2js = require('xml2js');
 
 try {
   //const payload = JSON.stringify(github.context.payload, undefined, 2)
@@ -202,7 +204,23 @@ try {
         core.setFailed(`${manifest} file access ${err}`);
       } else {
         const fileContents = fs.readFileSync(manifest).toString();
-        console.log(`${manifest} is ${fileContents}`);
+        //console.log(`${manifest} string ${fileContents}`);
+        const parser = new xml2js.Parser();
+        const builder = new xml2js.Builder();
+        parser.parseString(fileContents, (err, result) => {
+          if (err) throw err;
+          console.log(`${manifest} xml ${result}`);
+
+          /*
+          result.root.element[0].value = 'new value';
+          const updatedXml = builder.buildObject(result);
+          fs.writeFile(manifest, updatedXml, (err) => {
+            if (err) throw err;
+            console.log('XML file updated successfully!');
+          });
+           */
+        });
+
         /*
         const applicationVersionPattern = /<ApplicationVersion>[^<]*<\/ApplicationVersion>/g;
         console.log(`${manifest} exists with ${fileContents}`);

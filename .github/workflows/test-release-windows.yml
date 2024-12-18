@@ -29,11 +29,11 @@ jobs:
 
     - name: Update AppSettings.json and .csproj
       id: info
-      uses: Reality-Check-Inc/secrets-json-action@v1.9.5
+      uses: Reality-Check-Inc/secrets-json-action@v1.9.6
       with:
         secrets: ${{ secrets.SECRETS_JSON }}
-        appsettings: "${{ env.AppSettings_Path }}"
-        csproj: "${{ env.Project_Path }}"
+        #appsettings: "${{ env.AppSettings_Path }}"
+        #csproj: "${{ env.Project_Path }}"
         manifest: "${{ env.Manifest_Path }}"
         buildversion: "${{ vars.BUILDVERSION }}"
         buildflavor: Windows
