@@ -217,9 +217,9 @@ try {
         parser.parseString(fileContents, (err, result) => {
           if (err) throw err;
           console.log(`${manifest} xml ${result}`);
-          console.log(`Identity ${result.Package.Identity}`);
-          console.log(`Identity.Version ${result.Package.Identity.Version}`);
-          console.log(`Identity.Version.value ${result.Package.Identity.Version.value}`);
+          console.log(`Package.Identity ${result.Package.Identity}`);
+          console.log(`Package.Identity.Version ${result.Package.Identity.Version}`);
+          console.log(`Package.Identity.Version.value ${result.Package.Identity.Version.value}`);
           result.Package.Identity.Version.value = buildVersion;
           const contents = builder.buildObject(result);
           fs.writeFile(manifest, contents, err => {
