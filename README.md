@@ -64,7 +64,11 @@ Standard values updated are:
 }
 ```
 
-### `flavor`
+### `buildversion`
+
+The build version if coming from a repository variable, such as `${{ vars.BUILDVERSION }}`
+
+### `buildflavor`
 
 The build flavor, such as windows, macos, ios. Replaces {BuildFlavor} in appsettings.json with this value.
 

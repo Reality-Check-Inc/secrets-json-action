@@ -29,7 +29,7 @@ try {
   //console.log(process.env);
 
   console.log(`github ref is ${github.context.ref}`);
-  var buildVersion = "0.0.0"
+  var buildVersion = core.getInput('buildversion');
   const ref = github.context.ref;
   if (ref.indexOf("tags") !== -1)
   {
@@ -71,12 +71,12 @@ try {
     if (err) {
       core.setFailed(`${appsettings} file access ${err}`);
     } else {
-      const flavor = core.getInput('flavor');
+      const buildFlavor = core.getInput('buildflavor');
       const fileContents = fs.readFileSync(appsettings).toString();
       //console.log(`${appsettings} exists with ${fileContents}`);
       var contents = fileContents
       .replace("{BuildVersion}", buildVersion)
-      .replace("{BuildFlavor}", flavor)
+      .replace("{BuildFlavor}", buildFlavor)
       .replace("{BuildTimeStamp}", timestamp)
       .replace("{BuildDate}", buildDate);
       for (const key in secret)
@@ -87,7 +87,7 @@ try {
         } else {
           //console.log(`${appsettings} updated to ${contents}`);
           console.log(`BuildVersion is ${buildVersion}`);
-          console.log(`BuildFlavor is ${flavor}`);
+          console.log(`BuildFlavor is ${buildFlavor}`);
           console.log(`BuildTimeStamp is ${timestamp}`);
           console.log(`BuildDate is ${buildDate}`);
           console.log(`${appsettings} updated`);

@@ -9,7 +9,11 @@ inputs:
     description: 'Path to appsettings.json'
     required: true
     default: 'appsettings.json'
-  flavor:  # id of input
+  buildversion:  # id of input
+    description: 'Build version repository variable value'
+    required: false
+    default: '0.0.0'
+  buildflavor:  # id of input
     description: 'Build flavor, such as windows,ios,macos'
     required: false
     default: 'windows'

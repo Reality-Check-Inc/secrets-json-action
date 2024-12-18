@@ -18,11 +18,11 @@ jobs:
 
     - name: Update Secrets in AppSettings.json
       id: info
-      uses: Reality-Check-Inc/secrets-json-action@v1.9
+      uses: Reality-Check-Inc/secrets-json-action@v1.9.1
       with:
         secrets: ${{ secrets.SECRETS_JSON }}
         appsettings: test_data/appsettings.json
-        flavor: macOS
+        buildflavor: macOS
       env:
         GH_TOKEN: ${{ secrets.PAT }}
 

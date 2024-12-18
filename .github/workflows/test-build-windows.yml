@@ -1,7 +1,8 @@
 on:
   push:
-    tags:
-      - '*'
+    branches: [ "main" ]
+    tags-ignore:
+      - '**'
 
   workflow_dispatch:
 
@@ -16,12 +17,17 @@ jobs:
       with:
         fetch-depth: 0
 
+    - name: repository variable list
+      run: gh variable list
+      env:
+        GH_TOKEN: ${{ secrets.PAT }}
+
     - name: Update Secrets in AppSettings.json
-      id: info
       uses: Reality-Check-Inc/secrets-json-action@v1.9.1
       with:
         secrets: ${{ secrets.SECRETS_JSON }}
         appsettings: test_data/appsettings.json
+        buildversion: ${{ vars.BUILDVERSION }}
         buildflavor: Windows
       env:
         GH_TOKEN: ${{ secrets.PAT }}
