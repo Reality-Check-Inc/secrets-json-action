@@ -38467,10 +38467,10 @@ try {
   // refs/tags/v0.35
   //const token = process.env['GH_TOKEN'];
   //console.log(process.env);
-  const printFile = core.getInput('printFile');
-  console.log(`printFile is ${printFile}`);
-  const printDirectory = core.getInput('printDirectory');
-  console.log(`printDirectory is ${printDirectory}`);
+  const printFile = core.getInput('printFile') === 'true';
+  console.log(`printFile is ${printFile} (${printFile === true})`);
+  const printDirectory = core.getInput('printDirectory') == 'true';
+  console.log(`printDirectory is ${printDirectory} (${printDirectory == true})`);
   const buildFlavor = core.getInput('buildflavor');
 
   console.log(`github ref is ${github.context.ref}`);
@@ -38651,15 +38651,14 @@ try {
         parser.parseString(fileContents, (err, result) => {
           if (err) throw err;
           console.log(`${manifest} xml ${result}`);
-          console.log(`Package.Identity ${result.Package.Identity}`);
-          console.log(`Package.Identity.Version ${result.Package.Identity[0].$.Version}`);
+          console.log(` *** current version = ${result.Package.Identity[0].$.Version}`);
           result.Package.Identity[0].$.Version = buildVersion;
           const contents = builder.buildObject(result);
           fs.writeFile(manifest, contents, err => {
             if (err) {
               core.setFailed(`${manifest} update error ${err}`);
             } else {
-              if (printFile == true)
+              if (printFile)
                 console.log(`${manifest} updated to ${contents}`);
               console.log(`${manifest} updated`);
             }
