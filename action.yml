@@ -18,6 +18,10 @@ inputs:
     description: 'Print file content after replacement (secrets are hidden)'
     required: false
     default: false
+  printDirectory:
+    description: 'Print directory content'
+    required: false
+    default: false
   buildversion:  # id of input
     description: 'Build version repository variable value'
     required: false

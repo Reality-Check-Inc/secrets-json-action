@@ -34,6 +34,7 @@ try {
   //const token = process.env['GH_TOKEN'];
   //console.log(process.env);
   const printFile = core.getInput('printFile');
+  const printDirectory = core.getInput('printDirectory');
 
   console.log(`github ref is ${github.context.ref}`);
   var buildVersion = core.getInput('buildversion');
@@ -53,21 +54,31 @@ try {
   replace(/\..+/, '')     // delete the dot and everything after
   console.log(`Time is ${time}, the unix time stamp is ${timestamp}`);
 
+  console.log(`BuildVersion is ${buildVersion}`);
+  console.log(`BuildFlavor is ${buildFlavor}`);
+  console.log(`BuildTimeStamp is ${timestamp}`);
+  console.log(`BuildDate is ${buildDate}`);
+  core.setOutput("version", buildVersion);
+  core.setOutput("timestamp", timestamp);
+  core.setOutput("date", buildDate);
+
   const secrets = core.getInput('secrets');
   const secret = JSON.parse(secrets);
 
   const processDirectory = process.cwd();
   console.log("process directory: ", processDirectory);
 
-/*
-  fs.readdir(processDirectory, (err, files) => {
-    if (err) {
-      console.error('Error reading directory:', err);
-    } else {
-      console.log('Files in cwd:', files);
-    }
-  });
-  */
+  if (printDirectory)
+  {
+    fs.readdir(processDirectory, (err, files) => {
+      if (err) {
+        console.error('Error reading directory:', err);
+      } else {
+        console.log('Files in cwd:', files);
+      }
+    });
+  }
+
   var filename = core.getInput('appsettings');
   if (isNullOrEmpty(filename)) {
     console.log(" *** no appsettings specified, skipping appsettings update");
@@ -97,17 +108,7 @@ try {
           } else {
             if (printFile)
               console.log(`${appsettings} updated to ${contents}`);
-
-            console.log(`BuildVersion is ${buildVersion}`);
-            console.log(`BuildFlavor is ${buildFlavor}`);
-            console.log(`BuildTimeStamp is ${timestamp}`);
-            console.log(`BuildDate is ${buildDate}`);
             console.log(`${appsettings} updated`);
-
-            core.setOutput("version", buildVersion);
-            core.setOutput("timestamp", timestamp);
-            core.setOutput("date", buildDate);
-
             // now update the repository variables
             if (ref.indexOf("tags") !== -1)
             {
