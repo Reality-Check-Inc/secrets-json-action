@@ -218,9 +218,8 @@ try {
           if (err) throw err;
           console.log(`${manifest} xml ${result}`);
           console.log(`Package.Identity ${result.Package.Identity}`);
-          console.log(`Package.Identity.Version ${result.Package.Identity.Version}`);
-          console.log(`Package.Identity.Version.value ${result.Package.Identity.Version.value}`);
-          result.Package.Identity.Version.value = buildVersion;
+          console.log(`Package.Identity.Version ${result.Package.Identity['@Version']}`);
+          result.Package.Identity['@Version'] = buildVersion;
           const contents = builder.buildObject(result);
           fs.writeFile(manifest, contents, err => {
             if (err) {
