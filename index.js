@@ -34,7 +34,9 @@ try {
   //const token = process.env['GH_TOKEN'];
   //console.log(process.env);
   const printFile = core.getInput('printFile');
+  console.log(`printFile is ${printFile}`);
   const printDirectory = core.getInput('printDirectory');
+  console.log(`printDirectory is ${printDirectory}`);
   const buildFlavor = core.getInput('buildflavor');
 
   console.log(`github ref is ${github.context.ref}`);
@@ -209,15 +211,15 @@ try {
         core.setFailed(`${manifest} file access ${err}`);
       } else {
         const fileContents = fs.readFileSync(manifest).toString();
-        //console.log(`${manifest} string ${fileContents}`);
+        console.log(`${manifest} string ${fileContents}`);
         const parser = new xml2js.Parser();
         const builder = new xml2js.Builder();
         parser.parseString(fileContents, (err, result) => {
           if (err) throw err;
           console.log(`${manifest} xml ${result}`);
-          console.log(`Identity ${result.Identity}`);
-          console.log(`Identity.Version ${result.Identity.Version}`);
-          result.Identity.Version.value = buildVersion;
+          console.log(`Identity ${result.identity}`);
+          console.log(`Identity.Version ${result.identity.version}`);
+          result.identity.version.value = buildVersion;
           const contents = builder.buildObject(result);
           fs.writeFile(manifest, contents, err => {
             if (err) {
