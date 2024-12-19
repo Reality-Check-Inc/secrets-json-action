@@ -9,13 +9,12 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    # always remember that windows is powershell
     timeout-minutes: 15
 
     steps:
     - name: Check out current repository
       uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
 
     - name: repository variable list
       run: gh variable list
@@ -29,8 +28,6 @@ jobs:
         appsettings: test_data/appsettings.json
         buildversion: ${{ vars.BUILDVERSION }}
         buildflavor: Windows
-      env:
-        GH_TOKEN: ${{ secrets.PAT }}
 
     # By default, Linux runners use the bash shell,
     # so you must use the syntax $NAME.

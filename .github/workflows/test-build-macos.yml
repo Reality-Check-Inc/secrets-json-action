@@ -1,0 +1,66 @@
+on:
+  push:
+    branches: [ "main" ]
+    tags-ignore:
+      - '**'
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    # always remember that macos is bash
+    timeout-minutes: 15
+
+    env:
+      AppSettings_Path: test_data\appsettings.json
+      Project_Path: test_data\maui-app.csproj
+      Manifest_Path: test_data\Package.appxmanifest
+
+    steps:
+    - name: Check out current repository
+      uses: actions/checkout@v4
+
+    - name: repository variable list
+      run: gh variable list
+      env:
+        GH_TOKEN: ${{ secrets.PAT }}
+
+    - name: Update appsettings, csproj and appxmanifest
+      id: info
+      uses: Reality-Check-Inc/secrets-json-action@v1.9.32
+      with:
+        secrets: ${{ secrets.SECRETS_JSON }}
+        appsettings: "${{ env.AppSettings_Path }}"
+        asbuildflavor: "Flavor"
+        asbuildversion: "Version"
+        asbuilddate: "BuildDate"
+        asbuildtimestamp: "BuildTimeStamp"
+        csproj: "${{ env.Project_Path }}"
+        #manifest: "${{ env.Manifest_Path }}"
+        buildversion: "${{ vars.BUILDVERSION }}"
+        buildflavor: macOS
+        printDirectory: true
+        printFile: true
+
+    # By default, Linux runners use the bash shell,
+    # so you must use the syntax $NAME.
+    # By default, Windows runners use PowerShell,
+    # so you would use the syntax $env:NAME
+    # Use the output from the `info` step
+    - name: Set variables
+      run: |
+        echo "BUILD_VERSION=$(echo ${{ steps.info.outputs.version }})" >> $GITHUB_ENV
+        echo "BUILD_TIMESTAMP=$(echo ${{ steps.info.outputs.timestamp }})" >> $GITHUB_ENV
+        echo "BUILD_DATE=$(echo ${{ steps.info.outputs.date }})" >> $GITHUB_ENV
+
+    - name: Show the variables
+      run: |
+        echo $BUILD_VERSION
+        echo $BUILD_TIMESTAMP
+        echo $BUILD_DATE
+
+    - name: repository variable list
+      run: gh variable list
+      env:
+        GH_TOKEN: ${{ secrets.PAT }}
