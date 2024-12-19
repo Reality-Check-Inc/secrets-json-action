@@ -38452,6 +38452,32 @@ const path = __nccwpck_require__(6928);
 const fs = __nccwpck_require__(9896);
 const xml2js = __nccwpck_require__(1736);
 
+function readDirectoryRecursive(dirPath) {
+  fs.readdir(dirPath, (err, files) => {
+    if (err) {
+      console.error('Error reading directory:', err);
+      return;
+    }
+
+    files.forEach(file => {
+      const filePath = path.join(dirPath, file);
+
+      fs.stat(filePath, (err, stats) => {
+        if (err) {
+          console.error('Error getting file stats:', err);
+          return;
+        }
+
+        if (stats.isDirectory()) {
+          readDirectoryRecursive(filePath); // Recursively read subdirectory
+        } else {
+          console.log(filePath); // Process file
+        }
+      });
+    });
+  });
+}
+
 function isNullOrEmpty(str) {
   return str == null || str.trim() === '';
 }
@@ -38520,16 +38546,8 @@ try {
   const processDirectory = process.cwd();
   console.log("process directory: ", processDirectory);
 
-  if (printDirectory === true)
-  {
-    fs.readdir(processDirectory, (err, files) => {
-      if (err) {
-        console.error('Error reading directory:', err);
-      } else {
-        console.log('Files in cwd:', files);
-      }
-    });
-  }
+  if (printDirectory)
+    readDirectoryRecursive(processDirectory);
 
   var filename = core.getInput('appsettings');
   if (isNullOrEmpty(filename)) {
