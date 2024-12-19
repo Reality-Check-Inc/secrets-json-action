@@ -5,6 +5,10 @@ This action get the current unix time stamp and tag as a version
 
 ## Inputs
 
+### `tz`
+
+The tz string in unix format.  Defaults to `America/Denver`
+
 ### `secrets`
 
 The secrets.json contents from a repository secret.
@@ -22,16 +26,17 @@ in the test.
 
 ### `appsettings`
 
-The path to the appsettings.json file.
+The path to the project `appsettings.json` file with an AppConfig object.
 
-Standard values updated are:
+Standard AppConfig values updated are:
 
 | Variable            | Description |
 |---------------------|-------------|
 | {BuildVersion} | Version from tag  |
 | {BuildFlavor} | Build flavor as passed in from the action  |
-| {BuildTimeStamp} | Current build unix time stamp  |
-| {BuildDate} | Current build in UTC date string  |
+| {BuildTimeStamp} | Current build unix time stamp in UTC  |
+| {BuildDate} | Current build date string  |
+| {BuildDateTime} | Current build date & time string  |
 
 `appsettings.json` is the configuration file for Maui apps.  This is what is used in the test.
 
@@ -40,6 +45,7 @@ Standard values updated are:
   "AppConfig": {
     "AppName": "Something",
     "BuildDate": "{BuildDate}",
+    "BuildDateTime": "{BuildDateTime}",
     "BuildTimeStamp": "{BuildTimeStamp}",
     "Version": "{BuildVersion}",
     "Flavor": "{BuildFlavor}",
@@ -64,6 +70,27 @@ Standard values updated are:
 }
 ```
 
+### `csproj`
+
+The path to the project `.csproj` file.  The `ApplicationDisplayVersion` value will be replaced with `BuildVersion`, while the `ApplicationVersion` value will be replaced with `BuildTimeStamp`.
+
+```xml
+<!-- Versions -->
+<ApplicationDisplayVersion>1.0.0.2</ApplicationDisplayVersion>
+<ApplicationVersion>1</ApplicationVersion>
+```
+
+### `manifest`
+
+The path to the Windows platform `Package.appxmanifest` file.  The `Identity` `Version` attribute value will be replaced with `BuildVersion`.
+
+```xml
+<Identity
+  Name="companyname.mauiapp"
+  Publisher="CN=Reality, C=US"
+  Version="1.0.0.2" />
+```
+
 ### `buildversion`
 
 The build version if coming from a repository variable, such as `${{ vars.BUILDVERSION }}`
@@ -80,23 +107,55 @@ Build version from tag
 
 ### `timestamp`
 
-Build unix timestamp
+Build unix timestamp, always in UTC
 
 ### `date`
 
 Build date string
 
+### `datetime`
+
+Build date & time string
 
 ## Example usage
 
 ```yaml
-- name: Update Secrets in AppSettings.json
-  uses: Reality-Check-Inc/secrets-json-action@v1.9.2
+- name: Update appsettings, csproj and appxmanifest
+  id: info
+  uses: Reality-Check-Inc/secrets-json-action@v1.9.31
   with:
     secrets: ${{ secrets.SECRETS_JSON }}
-    appsettings: test_data/appsettings.json
-    buildversion: ${{ vars.BUILDVERSION }}
+    appsettings: "${{ env.AppSettings_Path }}"
+    asbuildflavor: "Flavor"
+    asbuildversion: "Version"
+    asbuilddate: "BuildDate"
+    asbuildtimestamp: "BuildTimeStamp"
+    csproj: "${{ env.Project_Path }}"
+    manifest: "${{ env.Manifest_Path }}"
+    buildversion: "${{ vars.BUILDVERSION }}"
     buildflavor: Windows
+    printDirectory: false
+    printFile: true
   env:
     GH_TOKEN: ${{ secrets.PAT }}
+
+# By default, Linux runners use the bash shell,
+# so you must use the syntax $NAME.
+# By default, Windows runners use PowerShell,
+# so you would use the syntax $env:NAME
+# Use the output from the `info` step
+- name: Set variables
+  run: |
+    gh variable set BUILDVERSION --body "${{ steps.info.outputs.version }}"
+    echo "build_version=${{ steps.info.outputs.version }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+    echo "build_timestamp=${{ steps.info.outputs.timestamp }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+    echo "build_date=${{ steps.info.outputs.date }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+  env:
+    GH_TOKEN: ${{ secrets.PAT }}
+
+- name: Show the variables
+  run: |
+    echo "${{ env.build_version }}"
+    echo "${{ env.build_timestamp }}"
+    echo "${{ env.build_date }}"    
 ```

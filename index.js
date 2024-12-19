@@ -78,6 +78,7 @@ try {
   core.setOutput("version", buildVersion);
   core.setOutput("timestamp", timestamp);
   core.setOutput("date", buildDate);
+  core.setOutput("datetime", buildDateTime);
 
   const secrets = core.getInput('secrets');
   const secret = JSON.parse(secrets);
