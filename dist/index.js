@@ -38489,10 +38489,16 @@ try {
 
   // build date and unix time stamp
   const timestamp = Math.floor(Date.now() / 1000);
-  const time = (new Date()).toTimeString();
-  const buildDate = new Date().toISOString().
-  replace(/T/, ' ').      // replace T with a space
-  replace(/\..+/, '')     // delete the dot and everything after
+
+  let now = new Date();
+  const offset = now.getTimezoneOffset();
+  now = new Date(now.getTime() - (offset*60*1000));
+  const buildDate = now.toISOString().split('T')[0];
+
+  const time = (now).toTimeString();
+  const buildDateTime = now.toISOString().
+    replace(/T/, ' ').      // replace T with a space
+    replace(/\..+/, '')     // delete the dot and everything after
   console.log(`Time is ${time}, the unix time stamp is ${timestamp}`);
 
   // show the values
@@ -38500,6 +38506,7 @@ try {
   console.log(`BuildFlavor is ${buildFlavor}`);
   console.log(`BuildTimeStamp is ${timestamp}`);
   console.log(`BuildDate is ${buildDate}`);
+  console.log(`BuildDateTime is ${buildDateTime}`);
   core.setOutput("version", buildVersion);
   core.setOutput("timestamp", timestamp);
   core.setOutput("date", buildDate);
@@ -38599,7 +38606,8 @@ try {
           .replace("{BuildVersion}", buildVersion)
           .replace("{BuildFlavor}", buildFlavor)
           .replace("{BuildTimeStamp}", timestamp)
-          .replace("{BuildDate}", buildDate);
+          .replace("{BuildDate}", buildDate)
+          .replace("{BuildDateTime}", buildDateTime);
         for (const key in secret)
           contents = contents.replace(key, secret[key]);
         fs.writeFile(appsettings, contents, err => {
