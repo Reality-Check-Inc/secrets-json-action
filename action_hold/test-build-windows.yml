@@ -9,8 +9,13 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-    # always remember that windows is powershell
+    # always remember that windows is powershell, and slash is \
     timeout-minutes: 15
+
+    env:
+      AppSettings_Path: test_data\appsettings.json
+      Project_Path: test_data\maui-app.csproj
+      Manifest_Path: test_data\Package.appxmanifest
 
     steps:
     - name: Check out current repository
