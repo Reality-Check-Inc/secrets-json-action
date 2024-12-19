@@ -14,14 +14,6 @@ inputs:
   manifest:
     description: 'Path to Windows Package.appxmanifest file'
     required: false
-  printFile:
-    description: 'Print file content after replacement (secrets are hidden)'
-    required: false
-    default: false
-  printDirectory:
-    description: 'Print directory content'
-    required: false
-    default: false
   buildversion:  # id of input
     description: 'Build version repository variable value'
     required: false
@@ -30,6 +22,15 @@ inputs:
     description: 'Build flavor, such as windows,ios,macos'
     required: false
     default: 'windows'
+  printFile:
+    description: 'Print file content after replacement (secrets are hidden)'
+    required: false
+    default: false
+  printDirectory:
+    description: 'Print directory content'
+    required: false
+    default: false
+
   version:  # id of input
     description: 'Build version repository variable name'
     required: false
@@ -42,6 +43,20 @@ inputs:
     description: 'Build timestamp repository variable name'
     required: false
     default: 'BuildTimeStamp'
+
+  asbuildflavor:  # id of input
+    description: 'appsettings.json build flavor label'
+    required: false
+  asbuildversion:  # id of input
+    description: 'appsettings.json build version label'
+    required: false
+  asbuilddate:  # id of input
+    description: 'appsettings.json build date label'
+    required: false
+  asbuildtimestamp:  # id of input
+    description: 'appsettings.json build unix timestamp label'
+    required: false
+
 outputs:
   version: # id of output
     description: 'Build version from tag'

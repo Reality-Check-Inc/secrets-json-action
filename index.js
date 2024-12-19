@@ -39,8 +39,11 @@ try {
   console.log(`printDirectory is ${printDirectory} (${printDirectory == true})`);
   const buildFlavor = core.getInput('buildflavor');
 
+  // build version is derived from tag if present.
   console.log(`github ref is ${github.context.ref}`);
   var buildVersion = core.getInput('buildversion');
+  if (isNullOrEmpty(buildVersion))
+    buildVersion = "0.0.0"
   const ref = github.context.ref;
   if (ref.indexOf("tags") !== -1)
   {
@@ -50,6 +53,7 @@ try {
       buildVersion = buildVersion.substring(1);
   }
 
+  // build date and unix time stamp
   const timestamp = Math.floor(Date.now() / 1000);
   const time = (new Date()).toTimeString();
   const buildDate = new Date().toISOString().
@@ -57,6 +61,7 @@ try {
   replace(/\..+/, '')     // delete the dot and everything after
   console.log(`Time is ${time}, the unix time stamp is ${timestamp}`);
 
+  // show the values
   console.log(`BuildVersion is ${buildVersion}`);
   console.log(`BuildFlavor is ${buildFlavor}`);
   console.log(`BuildTimeStamp is ${timestamp}`);
@@ -95,8 +100,55 @@ try {
       if (err) {
         core.setFailed(`${appsettings} file access ${err}`);
       } else {
-        const fileContents = fs.readFileSync(appsettings).toString();
+        var fileContents = fs.readFileSync(appsettings).toString();
         //console.log(`${appsettings} exists with ${fileContents}`);
+
+        var loadjson = true;
+        var asbuildflavor = core.getInput('asbuildflavor');
+        var asbuildversion = core.getInput('asbuildversion');
+        var asbuilddate = core.getInput('asbuilddate');
+        var asbuildtimestamp = core.getInput('asbuildtimestamp');
+        if (isNullOrEmpty(asbuildflavor) &&
+            isNullOrEmpty(asbuildversion) &&
+            isNullOrEmpty(asbuilddate) &&
+            isNullOrEmpty(asbuildtimestamp))
+        {
+          loadjson = false;
+        }
+        if (loadjson)
+        {
+          let settings = JSON.parse(fileContents);
+          console.log(`${appsettings} json ${settings}`);
+          var appconfig = settings.AppConfig;
+          console.log(`AppConfig ${appconfig}`);
+          if (!isNullOrEmpty(asbuildflavor))
+          {
+            var object = appconfig[asbuildflavor];
+            console.log(` *** current flavor = ${appconfig[asbuildflavor]}`);
+            appconfig[asbuildflavor] = "{BuildFlavor}";
+          }
+          if (!isNullOrEmpty(asbuildversion))
+          {
+            var object = appconfig[asbuildversion];
+            console.log(` *** current flavor = ${appconfig[asbuildversion]}`);
+            appconfig[asbuildversion] = "{BuildVersion}";
+          }
+          if (!isNullOrEmpty(asbuilddate))
+          {
+            var object = appconfig[asbuilddate];
+            console.log(` *** current flavor = ${appconfig[asbuilddate]}`);
+            appconfig[asbuilddate] = "{BuildDate}";
+          }
+          if (!isNullOrEmpty(asbuildtimestamp))
+          {
+            var object = appconfig[asbuildtimestamp];
+            console.log(` *** current flavor = ${appconfig[asbuildtimestamp]}`);
+            appconfig[asbuildtimestamp] = "{BuildTimeStamp}";
+          }
+          fileContents = JSON.stringify(settings);
+          console.log(`AppConfig ${fileContents}`);
+        }
+
         var contents = fileContents
           .replace("{BuildVersion}", buildVersion)
           .replace("{BuildFlavor}", buildFlavor)
