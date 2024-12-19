@@ -38554,30 +38554,42 @@ try {
           let settings = JSON.parse(fileContents);
           //console.log(`${appsettings} json ${settings}`);
           var appconfig = settings.AppConfig;
-          console.log(`AppConfig ${appconfig}`);
+          //console.log(`AppConfig ${appconfig}`);
           if (!isNullOrEmpty(asbuildflavor))
           {
             var object = appconfig[asbuildflavor];
-            console.log(`current ${asbuildflavor} = ${appconfig[asbuildflavor]}`);
-            appconfig[asbuildflavor] = "{BuildFlavor}";
+            if (object !== null)
+            {
+              console.log(`current ${asbuildflavor} = ${appconfig[asbuildflavor]}`);
+              appconfig[asbuildflavor] = "{BuildFlavor}";
+            }
           }
           if (!isNullOrEmpty(asbuildversion))
           {
             var object = appconfig[asbuildversion];
-            console.log(`current ${asbuildversion} = ${appconfig[asbuildversion]}`);
-            appconfig[asbuildversion] = "{BuildVersion}";
+            if (object !== null)
+            {
+              console.log(`current ${asbuildversion} = ${appconfig[asbuildversion]}`);
+              appconfig[asbuildversion] = "{BuildVersion}";
+            }
           }
           if (!isNullOrEmpty(asbuilddate))
           {
             var object = appconfig[asbuilddate];
-            console.log(`current ${asbuilddate} = ${appconfig[asbuilddate]}`);
-            appconfig[asbuilddate] = "{BuildDate}";
+            if (object !== null)
+            {
+              console.log(`current ${asbuilddate} = ${appconfig[asbuilddate]}`);
+              appconfig[asbuilddate] = "{BuildDate}";
+            }
           }
           if (!isNullOrEmpty(asbuildtimestamp))
           {
             var object = appconfig[asbuildtimestamp];
-            console.log(`current ${asbuildtimestamp} = ${appconfig[asbuildtimestamp]}`);
-            appconfig[asbuildtimestamp] = "{BuildTimeStamp}";
+            if (object !== null)
+            {
+              console.log(`current ${asbuildtimestamp} = ${appconfig[asbuildtimestamp]}`);
+              appconfig[asbuildtimestamp] = "{BuildTimeStamp}";
+            }
           }
           fileContents = JSON.stringify(settings);
           //console.log(`AppConfig ${fileContents}`);

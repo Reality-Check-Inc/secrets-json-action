@@ -29,7 +29,7 @@ jobs:
 
     - name: Update appsettings, csproj and appxmanifest
       id: info
-      uses: Reality-Check-Inc/secrets-json-action@v1.9.25
+      uses: Reality-Check-Inc/secrets-json-action@v1.9.26
       with:
         secrets: ${{ secrets.SECRETS_JSON }}
         appsettings: "${{ env.AppSettings_Path }}"
