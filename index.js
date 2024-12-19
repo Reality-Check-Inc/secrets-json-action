@@ -55,7 +55,9 @@ try {
 
   // time zone
   // "Mountain Time", "America/Denver"
-  process.env.TZ = 'America/Denver';
+  const tz = core.getInput('tz');
+  console.log(`Unix time zone is ${tz}`);
+  process.env.TZ = tz;
 
   // build date and unix time stamp
   const timestamp = Math.floor(Date.now() / 1000);

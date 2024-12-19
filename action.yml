@@ -1,10 +1,13 @@
 name: 'Secrets for AppSettings.json'
 description: 'Use secrets.json to update appsettings.json'
 inputs:
+  tz:
+    description: 'Unix time zone'
+    required: false
+    default: "America/Denver"
   secrets:  # id of input
     description: 'Content of secrets.json'
     required: true
-    default: '{}'
   appsettings:  # id of input
     description: 'Path to appsettings.json'
     required: false
