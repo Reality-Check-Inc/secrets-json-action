@@ -17,6 +17,9 @@ inputs:
   manifest:
     description: 'Path to Windows Package.appxmanifest file'
     required: false
+  infoplist:
+    description: 'Path to Info.plist file'
+    required: false
   buildversion:  # id of input
     description: 'Build version repository variable value'
     required: false

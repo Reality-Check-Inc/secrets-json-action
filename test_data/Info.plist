@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>UIDeviceFamily</key>
+	<array>
+		<integer>1</integer>
+		<integer>2</integer>
+	</array>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>arm64</string>
+	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>XSAppIconAssets</key>
+	<string>Assets.xcassets/appicon.appiconset</string>
+	<key>MinimumOSVersion</key>
+	<string>15.0</string>
+	<key>CFBundleName</key>
+	<string>name</string>
+	<key>CFBundleDisplayName</key>
+	<string>name</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.companyname.mauiapp</string>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.companyname.mauiapp</string>
+	</array>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1</string>
+	<key>CFBundleVersion</key>
+	<string>1734080400</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+	<key>com.apple.developer.kernel.increased-memory-limit</key>
+	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>processing</string>
+	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Turning on location services allows us to show your location on the map with the blue dot.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>This app needs access to the camera to take photos and read QR codes.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app needs access to photos for attaching to reports</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app needs access to microphone for videos for attaching to reports.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>This app needs access to the photo gallery for attaching to reports.</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>This identifier will be used to track your app usage.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>App needs to access contacts</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>App needs to access calendar</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>App needs to access music</string>
+	<key>NSSiriUsageDescription</key>
+	<string>App needs to access siri</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+</dict>
+</plist>
