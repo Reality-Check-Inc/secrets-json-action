@@ -7,8 +7,8 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
-    # always remember that windows is powershell
+    runs-on: macos-latest
+    # always remember that macos is bash
     timeout-minutes: 15
 
     env:
@@ -19,8 +19,6 @@ jobs:
     steps:
     - name: Check out current repository
       uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
 
     - name: repository variable list
       run: gh variable list
@@ -38,10 +36,10 @@ jobs:
         asbuilddate: "BuildDate"
         asbuildtimestamp: "BuildTimeStamp"
         csproj: "${{ env.Project_Path }}"
-        manifest: "${{ env.Manifest_Path }}"
+        #manifest: "${{ env.Manifest_Path }}"
         buildversion: "${{ vars.BUILDVERSION }}"
-        buildflavor: Windows
-        printDirectory: false
+        buildflavor: macOS
+        printDirectory: true
         printFile: true
       env:
         GH_TOKEN: ${{ secrets.PAT }}
@@ -53,18 +51,15 @@ jobs:
     # Use the output from the `info` step
     - name: Set variables
       run: |
-        gh variable set BUILDVERSION --body "${{ steps.info.outputs.version }}"
-        echo "build_version=${{ steps.info.outputs.version }}" | Out-File -FilePath $env:GITHUB_ENV -Append
-        echo "build_timestamp=${{ steps.info.outputs.timestamp }}" | Out-File -FilePath $env:GITHUB_ENV -Append
-        echo "build_date=${{ steps.info.outputs.date }}" | Out-File -FilePath $env:GITHUB_ENV -Append
-      env:
-        GH_TOKEN: ${{ secrets.PAT }}
+        echo "BUILD_VERSION=$(echo ${{ steps.info.outputs.version }})" >> $GITHUB_ENV
+        echo "BUILD_TIMESTAMP=$(echo ${{ steps.info.outputs.timestamp }})" >> $GITHUB_ENV
+        echo "BUILD_DATE=$(echo ${{ steps.info.outputs.date }})" >> $GITHUB_ENV
 
     - name: Show the variables
       run: |
-        echo "${{ env.build_version }}"
-        echo "${{ env.build_timestamp }}"
-        echo "${{ env.build_date }}"
+        echo $BUILD_VERSION
+        echo $BUILD_TIMESTAMP
+        echo $BUILD_DATE
 
     - name: repository variable list
       run: gh variable list
