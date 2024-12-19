@@ -38453,7 +38453,7 @@ const fs = __nccwpck_require__(9896);
 const xml2js = __nccwpck_require__(1736);
 
 function isNullOrEmpty(str) {
-  return str === null || str.trim() === '';
+  return str == null || str.trim() === '';
 }
 
 try {
@@ -38569,7 +38569,7 @@ try {
           if (!isNullOrEmpty(asbuildflavor))
           {
             var object = appconfig[asbuildflavor];
-            if (object !== null)
+            if (object != null)
             {
               console.log(`current ${asbuildflavor} = ${appconfig[asbuildflavor]}`);
               appconfig[asbuildflavor] = "{BuildFlavor}";
@@ -38578,7 +38578,7 @@ try {
           if (!isNullOrEmpty(asbuildversion))
           {
             var object = appconfig[asbuildversion];
-            if (object !== null)
+            if (object != null)
             {
               console.log(`current ${asbuildversion} = ${appconfig[asbuildversion]}`);
               appconfig[asbuildversion] = "{BuildVersion}";
@@ -38587,7 +38587,7 @@ try {
           if (!isNullOrEmpty(asbuilddate))
           {
             var object = appconfig[asbuilddate];
-            if (object !== null)
+            if (object != null)
             {
               console.log(`current ${asbuilddate} = ${appconfig[asbuilddate]}`);
               appconfig[asbuilddate] = "{BuildDate}";
@@ -38596,7 +38596,7 @@ try {
           if (!isNullOrEmpty(asbuilddatetime))
           {
             var object = appconfig[asbuilddatetime];
-            if (object !== null)
+            if (object != null)
             {
               console.log(`current ${asbuilddatetime} = ${appconfig[asbuilddatetime]}`);
               appconfig[asbuilddatetime] = "{BuildDateTime}";
@@ -38605,7 +38605,7 @@ try {
           if (!isNullOrEmpty(asbuildtimestamp))
           {
             var object = appconfig[asbuildtimestamp];
-            if (object !== null)
+            if (object != null)
             {
               console.log(`current ${asbuildtimestamp} = ${appconfig[asbuildtimestamp]}`);
               appconfig[asbuildtimestamp] = "{BuildTimeStamp}";
