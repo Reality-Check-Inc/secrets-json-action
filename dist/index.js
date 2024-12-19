@@ -38487,19 +38487,21 @@ try {
       buildVersion = buildVersion.substring(1);
   }
 
+  // time zone
+  // "Mountain Time", "America/Denver"
+  process.env.TZ = 'America/Denver';
+
   // build date and unix time stamp
   const timestamp = Math.floor(Date.now() / 1000);
-
   let now = new Date();
   const offset = now.getTimezoneOffset();
   now = new Date(now.getTime() - (offset*60*1000));
   const buildDate = now.toISOString().split('T')[0];
-
   const time = (now).toTimeString();
   const buildDateTime = now.toISOString().
     replace(/T/, ' ').      // replace T with a space
     replace(/\..+/, '')     // delete the dot and everything after
-  console.log(`Time is ${time}, the unix time stamp is ${timestamp}`);
+  console.log(`Time is ${time} (offset is ${offset}), the unix time stamp is ${timestamp}`);
 
   // show the values
   console.log(`BuildVersion is ${buildVersion}`);
