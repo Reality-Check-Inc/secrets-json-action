@@ -24,16 +24,13 @@ function readDirectoryRecursive(dirPath) {
       console.error('Error reading directory:', err);
       return;
     }
-
     files.forEach(file => {
       const filePath = path.join(dirPath, file);
-
       fs.stat(filePath, (err, stats) => {
         if (err) {
           console.error('Error getting file stats:', err);
           return;
         }
-
         if (stats.isDirectory()) {
           readDirectoryRecursive(filePath); // Recursively read subdirectory
         } else {
@@ -110,10 +107,11 @@ try {
   const secret = JSON.parse(secrets);
 
   const processDirectory = process.cwd();
-  console.log("process directory: ", processDirectory);
-
   if (printDirectory)
+  {
+    console.log("process directory: ", processDirectory);
     readDirectoryRecursive(processDirectory);
+  }
 
   var filename = core.getInput('appsettings');
   if (isNullOrEmpty(filename)) {
