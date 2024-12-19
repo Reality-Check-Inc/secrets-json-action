@@ -44,7 +44,7 @@ jobs:
         #manifest: "${{ env.Manifest_Path }}"
         buildversion: "${{ vars.BUILDVERSION }}"
         buildflavor: macOS
-        printDirectory: true
+        printDirectory: false
         printFile: true
 
     # By default, Linux runners use the bash shell,
