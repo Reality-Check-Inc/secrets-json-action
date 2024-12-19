@@ -38487,14 +38487,12 @@ try {
       buildVersion = buildVersion.substring(1);
   }
 
-  // time zone
-  // "Mountain Time", "America/Denver"
+  // build date and unix time stamp
+  // time stamp will always be in utc
+  const timestamp = Math.floor(Date.now() / 1000);
   const tz = core.getInput('tz');
   console.log(`Unix time zone is ${tz}`);
   process.env.TZ = tz;
-
-  // build date and unix time stamp
-  const timestamp = Math.floor(Date.now() / 1000);
   let now = new Date();
   const offset = now.getTimezoneOffset();
   now = new Date(now.getTime() - (offset*60*1000));
@@ -38508,7 +38506,7 @@ try {
   // show the values
   console.log(`BuildVersion is ${buildVersion}`);
   console.log(`BuildFlavor is ${buildFlavor}`);
-  console.log(`BuildTimeStamp is ${timestamp}`);
+  console.log(`BuildTimeStamp is ${timestamp} (always UTC)`);
   console.log(`BuildDate is ${buildDate}`);
   console.log(`BuildDateTime is ${buildDateTime}`);
   core.setOutput("version", buildVersion);
@@ -38552,10 +38550,12 @@ try {
         var asbuildflavor = core.getInput('asbuildflavor');
         var asbuildversion = core.getInput('asbuildversion');
         var asbuilddate = core.getInput('asbuilddate');
+        var asbuilddatetime = core.getInput('asbuilddatetime');
         var asbuildtimestamp = core.getInput('asbuildtimestamp');
         if (isNullOrEmpty(asbuildflavor) &&
             isNullOrEmpty(asbuildversion) &&
             isNullOrEmpty(asbuilddate) &&
+            isNullOrEmpty(asbuilddatetime) &&
             isNullOrEmpty(asbuildtimestamp))
         {
           loadjson = false;
@@ -38593,6 +38593,15 @@ try {
               appconfig[asbuilddate] = "{BuildDate}";
             }
           }
+          if (!isNullOrEmpty(asbuilddatetime))
+          {
+            var object = appconfig[asbuilddatetime];
+            if (object !== null)
+            {
+              console.log(`current ${asbuilddatetime} = ${appconfig[asbuilddatetime]}`);
+              appconfig[asbuilddatetime] = "{BuildDateTime}";
+            }
+          }
           if (!isNullOrEmpty(asbuildtimestamp))
           {
             var object = appconfig[asbuildtimestamp];
@@ -38628,6 +38637,7 @@ try {
               {
                 const giVersion = core.getInput('version');
                 const giDate = core.getInput('date');
+                const giDateTime = core.getInput('datetime');
                 const giTimeStamp = core.getInput('timestamp');
                 async function run() {
                   process.on('uncaughtException', function (err) {
@@ -38647,6 +38657,7 @@ try {
                     await exec.exec('gh', ['variable', 'set', giVersion, '--body', buildVersion], options);
                     await exec.exec('gh', ['variable', 'set', giTimeStamp, '--body', timestamp], options);
                     await exec.exec('gh', ['variable', 'set', giDate, '--body', buildDate], options);
+                    await exec.exec('gh', ['variable', 'set', giDateTime, '--body', buildDateTime], options);
                     //await exec.exec('gh', ['variable', 'list'], options);
                     //const trimmed = describeOutput.trim();
                     //console.log(`variable set: ${trimmed}`);
