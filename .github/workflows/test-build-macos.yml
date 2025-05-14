@@ -8,8 +8,6 @@ on:
     tags-ignore:
       - '**'
 
-  workflow_dispatch:
-
 jobs:
   build:
     runs-on: macos-latest
@@ -32,7 +30,7 @@ jobs:
 
     - name: Update appsettings, csproj and appxmanifest
       id: info
-      uses: Reality-Check-Inc/secrets-json-action@v1.9.33
+      uses: Reality-Check-Inc/secrets-json-action@v1.9.34
       with:
         secrets: ${{ secrets.SECRETS_JSON }}
         appsettings: "${{ env.AppSettings_Path }}"
