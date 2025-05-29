@@ -38435,15 +38435,18 @@ var __webpack_exports__ = {};
 // index.js
 
 // https://docs.github.com/en/actions/sharing-automations/creating-actions/creating-a-javascript-action
-// npm install @actions/core
-// npm install @actions/github
-// npm install @actions/exec
-// npm install xml2js
-// npm i -g @vercel/ncc
-// ncc build index.js --license licenses.txt
-// git commit -m "action update"
-// git tag -a -m "action update" v1.2
-// git push --follow-tags
+/*
+npm install @actions/core
+npm install @actions/github
+npm install @actions/exec
+npm install xml2js
+npm i -g @vercel/ncc
+
+ncc build index.js --license licenses.txt
+git commit -m "action update"
+git tag -a -m "action update" v1.2
+git push --follow-tags
+*/
 
 const core = __nccwpck_require__(8190);
 const github = __nccwpck_require__(9414);
@@ -38639,7 +38642,9 @@ try {
           .replace("{BuildDate}", buildDate)
           .replace("{BuildDateTime}", buildDateTime);
         for (const key in secret)
-          contents = contents.replace(key, secret[key]);
+          contents = contents.replace(`{${key}}`, secret[key]);
+        // will only replace the first, the following would replace all
+        // contents = contents.replace(new RegExp(`{${key}}`, 'g'), secret[key]);
         fs.writeFile(appsettings, contents, err => {
           if (err) {
             core.setFailed(`${appsettings} update error ${err}`);
